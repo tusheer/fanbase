@@ -7,8 +7,7 @@ import z, { ZodError } from 'zod';
 import customConfig from './utils/default';
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
-
-dotenv.config();
+import connectDB from './utils/prisma';
 
 const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
@@ -71,5 +70,6 @@ app.use(
 
 const port = customConfig.port;
 app.listen(port, () => {
+    connectDB();
     console.log(`🚀 Server listening on port ${port}`);
 });

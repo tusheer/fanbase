@@ -1,27 +1,28 @@
 {
-  "name": "edutech-manage",
-  "version": "0.0.0",
-  "private": true,
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "build": "dotenv -- turbo run build",
-    "dev": "dotenv -- turbo run dev --parallel",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
-  "devDependencies": {
-    "eslint-config-custom": "*",
-    "prettier": "latest",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "dependencies": {
-    "dotenv-cli": "^6.0.0"
-  },
-  "packageManager": "npm@8.19.2"
+    "name": "edutech-manage",
+    "version": "0.0.0",
+    "private": true,
+    "workspaces": [
+        "backend/*",
+        "frontend/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "build": "dotenv -- turbo run build",
+        "dev": "dotenv -- turbo run dev --parallel",
+        "lint": "turbo run lint",
+        "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    },
+    "devDependencies": {
+        "eslint-config-custom": "*",
+        "prettier": "latest",
+        "turbo": "latest"
+    },
+    "engines": {
+        "node": ">=14.0.0"
+    },
+    "dependencies": {
+        "dotenv-cli": "^6.0.0"
+    },
+    "packageManager": "npm@8.19.2"
 }
