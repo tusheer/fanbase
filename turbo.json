@@ -1,0 +1,18 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**", ".next/**"]
+        },
+        "lint": {
+            "outputs": [],
+            "cache": false
+        },
+        "dev": {
+            "cache": false
+        }
+    },
+    "globalDependencies": [".env"],
+    "globalEnv": ["API", "MONGODB_URI", "NODE_ENV"]
+}
