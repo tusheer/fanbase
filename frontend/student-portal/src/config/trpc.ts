@@ -1,6 +1,6 @@
 import { httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
-import { AppRouter } from 'main-service';
+import { AppRouter } from 'hero';
 
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import SuperJSON from 'superjson';

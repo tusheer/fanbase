@@ -11,6 +11,7 @@
         "build": "dotenv -- turbo run build",
         "dev": "dotenv -- turbo run dev --parallel",
         "lint": "turbo run lint",
+        "db:generate": "dotenv -- turbo run db:generate",
         "format": "prettier --write \"**/*.{ts,tsx,md}\""
     },
     "devDependencies": {

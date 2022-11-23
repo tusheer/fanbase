@@ -7,7 +7,7 @@ import z, { ZodError } from 'zod';
 import customConfig from './utils/default';
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
-import connectDB from './utils/prisma';
+import connectDB from './utils/connectDB';
 
 const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
