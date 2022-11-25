@@ -1,50 +1,34 @@
-import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import z, { ZodError } from 'zod';
+import z from 'zod';
 import customConfig from './utils/default';
-import { inferAsyncReturnType, initTRPC } from '@trpc/server';
-import superjson from 'superjson';
-import connectDB from './utils/connectDB';
+import prisma, { connectDB } from './utils/prisma';
+import { procedure, router, Context, createContext } from './utils/trpc';
 
-const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
-
-export type Context = inferAsyncReturnType<typeof createContext>;
-
-const t = initTRPC.context<Context>().create({
-    transformer: superjson,
-    errorFormatter({ shape, error }) {
-        return {
-            ...shape,
-            data: {
-                ...shape.data,
-                zodError:
-                    error.code === 'BAD_REQUEST' && error.cause instanceof ZodError ? error.cause.flatten() : null,
-            },
-        };
-    },
-});
-
-export const appRouter = t.router({
-    hello: t.procedure
+export const appRouter = router({
+    createUser: procedure
         .input(
             z.object({
-                text: z.string(),
+                name: z.string(),
+                email: z.string().email(),
             })
         )
-        .query(({ input }) => {
+        .mutation(async ({ input: { email, name } }) => {
+            console.log('URL', process.env.MONGODBURL);
+
+            const user = await prisma.user.create({
+                data: {
+                    email,
+                    name,
+                },
+            });
+            console.log(user);
             return {
-                greeting: `hello ${input.text}`,
+                ...user,
             };
         }),
-
-    getId: t.procedure.query(() => {
-        return {
-            value: 'Some value',
-        };
-    }),
 });
 
 export type AppRouter = typeof appRouter;
@@ -73,3 +57,5 @@ app.listen(port, () => {
     connectDB();
     console.log(`🚀 Server listening on port ${port}`);
 });
+
+export { Context };

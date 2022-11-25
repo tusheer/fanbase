@@ -4,18 +4,25 @@
     "description": "",
     "main": "server.ts",
     "scripts": {
-        "dev": "ts-node-dev --respawn --transpile-only server.ts"
+        "build": "tsup",
+        "build:ts": "tsup --env.NODE_ENV production",
+        "copy:assets": "cpy 'src/generated/*.json' dist/generated",
+        "dev": "npm run dev:watch",
+        "dev:watch": "tsx watch --clear-screen=false server.ts",
+        "start": "tsx server.ts",
+        "start:prod": "node dist/server.js",
+        "typecheck": "tsc -b"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@trpc/server": "^10.0.0-rc.5",
         "cors": "^2.8.5",
+        "database": "*",
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
         "superjson": "^1.11.0",
-        "zod": "^3.19.1",
-        "database": "*"
+        "zod": "^3.19.1"
     },
     "devDependencies": {
         "@types/cors": "^2.8.12",
@@ -23,7 +30,22 @@
         "@types/morgan": "^1.9.3",
         "@types/node": "^18.11.9",
         "morgan": "^1.10.0",
-        "ts-node-dev": "^2.0.0",
+        "ts-node": "^10.9.1",
+        "tsup": "^6.5.0",
+        "tsx": "^3.12.1",
         "typescript": "^4.9.3"
+    },
+    "tsup": {
+        "entry": [
+            "**/*.ts"
+        ],
+        "splitting": false,
+        "sourcemap": true,
+        "clean": true,
+        "format": [
+            "cjs"
+        ],
+        "target": "es2018",
+        "onSuccess": "npm run copy:assets"
     }
 }

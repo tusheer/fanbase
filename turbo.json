@@ -21,5 +21,5 @@
         }
     },
     "globalDependencies": [".env"],
-    "globalEnv": ["API", "MONGODB_URI", "NODE_ENV"]
+    "globalEnv": ["API", "MONGODBURL", "NODE_ENV"]
 }
