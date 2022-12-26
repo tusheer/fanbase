@@ -8,6 +8,13 @@ import prisma, { connectDB } from './utils/prisma';
 import { procedure, router, Context, createContext } from './utils/trpc';
 
 export const appRouter = router({
+    getUsers: procedure.query(async () => {
+        const users = await prisma.user.findMany();
+        return {
+            users: [...users],
+        };
+    }),
+
     createUser: procedure
         .input(
             z.object({
@@ -16,15 +23,12 @@ export const appRouter = router({
             })
         )
         .mutation(async ({ input: { email, name } }) => {
-            console.log('URL', process.env.MONGODBURL);
-
             const user = await prisma.user.create({
                 data: {
                     email,
                     name,
                 },
             });
-            console.log(user);
             return {
                 ...user,
             };
@@ -35,7 +39,6 @@ export type AppRouter = typeof appRouter;
 
 const app = express();
 
-// eslint-disable-next-line turbo/no-undeclared-env-vars
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
 app.use(
