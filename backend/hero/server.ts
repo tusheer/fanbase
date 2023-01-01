@@ -6,6 +6,7 @@ import z from 'zod';
 import customConfig from './utils/default';
 import prisma, { connectDB } from './utils/prisma';
 import { procedure, router, Context, createContext } from './utils/trpc';
+import { TRPCError } from '@trpc/server';
 
 export const appRouter = router({
     getUsers: procedure.query(async () => {
@@ -23,15 +24,24 @@ export const appRouter = router({
             })
         )
         .mutation(async ({ input: { email, name } }) => {
-            const user = await prisma.user.create({
-                data: {
-                    email,
-                    name,
-                },
-            });
-            return {
-                ...user,
-            };
+            try {
+                const user = await prisma.user.create({
+                    data: {
+                        email,
+                        name,
+                    },
+                });
+                return {
+                    ...user,
+                };
+            } catch (error) {
+                throw new TRPCError({
+                    code: 'BAD_REQUEST',
+                    message: 'An unexpected error occurred, please try again later.',
+                    // optional: pass the original error to retain stack trace
+                    cause: error,
+                });
+            }
         }),
 });
 
