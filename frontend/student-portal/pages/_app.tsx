@@ -1,6 +1,5 @@
 import { ReactElement, ReactNode } from 'react';
-import server from '@trpc/server';
-import type { AppProps, AppType } from 'next/app';
+import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import trpc from '../src/config/trpc';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -15,7 +14,6 @@ type AppPropsWithLayout = AppProps & {
 
 const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
     const getLayout = Component.getLayout ?? ((page) => page);
-
     return getLayout(
         <>
             <ReactQueryDevtools initialIsOpen={false} />

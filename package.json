@@ -17,7 +17,6 @@
         "format": "prettier --write \"**/*.{ts,tsx,md}\""
     },
     "devDependencies": {
-        "eslint-config-custom": "*",
         "prettier": "latest",
         "turbo": "latest"
     },
@@ -27,5 +26,5 @@
     "dependencies": {
         "dotenv-cli": "^6.0.0"
     },
-    "packageManager": "npm@8.19.2"
+    "packageManager": "pnpm@7.17.1"
 }

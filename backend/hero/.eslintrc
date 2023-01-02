@@ -1,0 +1,6 @@
+{
+    "extends": ["eslint-config-custom-react"],
+    "rules": {
+        "no-console": "error"
+    }
+}

@@ -6,7 +6,6 @@ export default function Web() {
 
     const { data } = trpc.getUsers.useQuery();
 
-    console.log(data);
     const createUser = trpc.createUser.useMutation();
 
     const handleCreateUser = async () => {
@@ -14,6 +13,7 @@ export default function Web() {
             {
                 email: 'tusher@gmail.com',
                 name: 'tusher',
+                surname: 'asdf',
             },
             {
                 onSuccess: function () {

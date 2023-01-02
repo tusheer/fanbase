@@ -19,6 +19,7 @@ export const appRouter = router({
     createUser: procedure
         .input(
             z.object({
+                surname: z.string(),
                 name: z.string(),
                 email: z.string().email(),
             })
@@ -31,6 +32,7 @@ export const appRouter = router({
                         name,
                     },
                 });
+                console.log('asdf');
                 return {
                     ...user,
                 };
