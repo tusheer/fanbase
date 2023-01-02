@@ -29,7 +29,7 @@
         "@types/express": "^4.17.15",
         "@types/morgan": "^1.9.4",
         "@types/node": "^18.11.18",
-        "eslint-config-custom-react": "workspace:*",
+        "eslint-config-custom-node": "workspace:*",
         "morgan": "^1.10.0",
         "ts-node": "^10.9.1",
         "tsup": "^6.5.0",

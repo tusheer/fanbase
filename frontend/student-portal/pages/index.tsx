@@ -11,7 +11,7 @@ export default function Web() {
     const handleCreateUser = async () => {
         createUser.mutate(
             {
-                email: 'tusher@gmail.com',
+                email: Number(new Date()) + 'tusher@gmail.com',
                 name: 'tusher',
                 surname: 'asdf',
             },
@@ -25,7 +25,7 @@ export default function Web() {
 
     return (
         <div>
-            {JSON.stringify(data?.users)}
+            <div>{JSON.stringify(data)}</div>
             <h1 onClick={handleCreateUser}> {createUser.isSuccess ? createUser.data.id : 'No data found '}</h1>
             <Button />
         </div>

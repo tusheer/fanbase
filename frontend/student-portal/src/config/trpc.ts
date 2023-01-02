@@ -6,7 +6,7 @@ import { loggerLink } from '@trpc/client/links/loggerLink';
 import SuperJSON from 'superjson';
 
 export const trpc: CreateTRPCNext<AppRouter, any, any> = createTRPCNext<AppRouter>({
-    config({ ctx }) {
+    config() {
         return {
             links: [
                 loggerLink({

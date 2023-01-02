@@ -10,10 +10,7 @@ import { TRPCError } from '@trpc/server';
 
 export const appRouter = router({
     getUsers: procedure.query(async () => {
-        const users = await prisma.user.findMany();
-        return {
-            users: [...users],
-        };
+        return await prisma.user.findMany();
     }),
 
     createUser: procedure
@@ -40,7 +37,6 @@ export const appRouter = router({
                 throw new TRPCError({
                     code: 'BAD_REQUEST',
                     message: 'An unexpected error occurred, please try again later.',
-                    // optional: pass the original error to retain stack trace
                     cause: error,
                 });
             }

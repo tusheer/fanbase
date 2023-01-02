@@ -1,6 +1,4 @@
 {
-    "extends": ["eslint-config-custom-react"],
-    "rules": {
-        "no-console": "error"
-    }
+    "root": true,
+    "extends": "eslint-config-custom-node"
 }
