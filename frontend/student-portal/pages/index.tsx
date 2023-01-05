@@ -1,4 +1,3 @@
-import { Button } from 'ui';
 import trpc from '../src/config/trpc';
 
 export default function Web() {
@@ -11,9 +10,8 @@ export default function Web() {
     const handleCreateUser = async () => {
         createUser.mutate(
             {
-                email: Number(new Date()) + 'tusher@gmail.com',
-                name: 'tusher',
-                surname: 'asdf',
+                email: Number(new Date()) + 'nedata@gmail.com',
+                name: 'NEw Data',
             },
             {
                 onSuccess: function () {
@@ -25,9 +23,18 @@ export default function Web() {
 
     return (
         <div>
-            <div>{JSON.stringify(data)}</div>
-            <h1 onClick={handleCreateUser}> {createUser.isSuccess ? createUser.data.id : 'No data found '}</h1>
-            <Button />
+            <button style={{ marginBottom: '20px' }} onClick={handleCreateUser}>
+                Create New User
+            </button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {data?.map((data) => {
+                    return (
+                        <div key={data.id} style={{ background: 'grey', padding: '8px' }}>
+                            {data.email}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }

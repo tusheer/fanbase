@@ -20,16 +20,17 @@ export const trpc: CreateTRPCNext<AppRouter, any, any> = createTRPCNext<AppRoute
                      * If you want to use SSR, you need to use the server's full URL
                      * @link https://trpc.io/docs/ssr
                      **/
-                    url: `http://localhost:8000/api/trpc`,
+                    url: 'http://localhost:8000/api/trpc',
                 }),
             ],
             transformer: SuperJSON,
             /**
              * @link https://tanstack.com/query/v4/docs/reference/QueryClient
              **/
-            // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+            queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
         };
     },
+    ssr: false,
 });
 
 export default trpc;
