@@ -3,7 +3,7 @@ import { PrismaClient } from 'database';
 const prisma = new PrismaClient();
 
 export async function connectDB() {
-    console.log(process.env.MONGODBURL);
+    console.log(process.env.POSTGRESQLURL);
     try {
         await prisma.$connect();
         console.log('? Database connected successfully');
