@@ -5,27 +5,24 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import z from 'zod';
 import customConfig from './utils/default';
 import prisma, { connectDB } from './utils/prisma';
-import { procedure, router, Context, createContext } from './utils/trpc';
+import { protectedProcedure, router, Context, createContext } from './utils/trpc';
 import { TRPCError } from '@trpc/server';
 
 export const appRouter = router({
-    getUsers: procedure.query(async () => {
-        return await prisma.user.findMany();
-    }),
-
-    createUser: procedure
+    createUser: protectedProcedure
         .input(
             z.object({
                 name: z.string(),
                 email: z.string().email(),
             })
         )
-        .mutation(async ({ input: { email, name } }) => {
+        .mutation(async ({ input: { email } }) => {
             try {
-                const user = await prisma.user.create({
+                const user = await prisma.celebrity.create({
                     data: {
                         email,
-                        name,
+                        password: '',
+                        username: '',
                     },
                 });
                 return {

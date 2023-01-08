@@ -1,7 +1,8 @@
 import { inferAsyncReturnType, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import z, { ZodError } from 'zod';
+import { ZodError } from 'zod';
+import { isAuthed } from '../middleware';
 
 export const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
@@ -23,4 +24,8 @@ const t = initTRPC.context<Context>().create({
 
 export const router = t.router;
 
-export const procedure = t.procedure;
+export const middleware = t.middleware;
+
+export const publicProcedure = t.procedure;
+
+export const protectedProcedure = t.procedure.use(isAuthed);
