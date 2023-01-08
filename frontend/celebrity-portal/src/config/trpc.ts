@@ -5,7 +5,7 @@ import type { AppRouter } from 'hero';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import SuperJSON from 'superjson';
 
-export const trpc: CreateTRPCNext<AppRouter, any, any> = createTRPCNext<AppRouter>({
+const trpc: CreateTRPCNext<AppRouter, any, any> = createTRPCNext<AppRouter>({
     config() {
         return {
             links: [
