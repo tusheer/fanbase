@@ -21,6 +21,7 @@
         "database": "workspace:*",
         "dotenv": "^16.0.3",
         "express": "^4.18.2",
+        "nookies": "^2.5.2",
         "superjson": "^1.12.1",
         "zod": "^3.20.2"
     },
