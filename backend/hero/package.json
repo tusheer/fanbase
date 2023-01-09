@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "description": "",
     "main": "server.ts",
+    "types": "./server.ts",
     "scripts": {
         "build": "tsup",
         "build:ts": "tsup --env.NODE_ENV production",

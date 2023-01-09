@@ -17,7 +17,7 @@
         "format": "prettier --write \"**/*.{ts,tsx,md}\""
     },
     "devDependencies": {
-        "prettier": "^2.8.1",
+        "prettier": "^2.8.2",
         "turbo": "^1.6.3"
     },
     "engines": {
@@ -26,5 +26,5 @@
     "dependencies": {
         "dotenv-cli": "^6.0.0"
     },
-    "packageManager": "pnpm@7.17.1"
+    "packageManager": "yarn@1.22.11"
 }

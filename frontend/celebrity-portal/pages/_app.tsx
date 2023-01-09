@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import trpc from '../src/config/trpc';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AppRouter } from 'hero';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;
@@ -23,4 +24,4 @@ const MyApp = ({ Component, pageProps }: AppPropsWithLayout) => {
 };
 
 //  @ts-ignore: Unreachable code error
-export default trpc.withTRPC(MyApp);
+export default trpc.withTRPC<AppRouter>(MyApp);

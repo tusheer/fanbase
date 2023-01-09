@@ -5,8 +5,6 @@ import { ZodError } from 'zod';
 
 export const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
-export type Context = inferAsyncReturnType<typeof createContext>;
-
 const t = initTRPC.context<Context>().create({
     transformer: superjson,
     errorFormatter({ shape, error }) {
@@ -22,6 +20,9 @@ const t = initTRPC.context<Context>().create({
 });
 
 export const middleware = t.middleware;
+export const publicProcedure = t.procedure;
+
+export const router = t.router;
 
 export const isAuthed = middleware(({ next, ctx }) => {
     if (!ctx?.req.headers.token) {
@@ -34,8 +35,6 @@ export const isAuthed = middleware(({ next, ctx }) => {
     });
 });
 
-export const publicProcedure = t.procedure;
-
 export const protectedProcedure = t.procedure.use(isAuthed);
 
-export const router = t.router;
+export type Context = inferAsyncReturnType<typeof createContext>;
