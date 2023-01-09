@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import type { NextPage } from 'next';
 import trpc from '../src/config/trpc';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { AppRouter } from 'hero';
+import type { AppRouter } from 'hero';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;
