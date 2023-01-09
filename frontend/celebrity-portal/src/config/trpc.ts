@@ -1,5 +1,5 @@
 import { httpBatchLink } from '@trpc/client';
-import { createTRPCNext, CreateTRPCNext } from '@trpc/next';
+import { createTRPCNext } from '@trpc/next';
 import type { AppRouter } from 'hero';
 
 import { loggerLink } from '@trpc/client/links/loggerLink';
