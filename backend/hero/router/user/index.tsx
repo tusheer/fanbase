@@ -1,4 +1,4 @@
-import { celebritySignupSchema } from '../../schema/user';
+import { celebritySignupSchema } from 'schema';
 import { router, protectedProcedure } from '../../utils/trpc';
 
 const userRoute = router({
