@@ -23,7 +23,8 @@
         "react-hook-form": "^7.41.5",
         "superjson": "^1.12.1",
         "ui": "*",
-        "zod": "^3.20.2"
+        "zod": "^3.20.2",
+        "schema": "*"
     },
     "devDependencies": {
         "@types/node": "^18.11.18",
