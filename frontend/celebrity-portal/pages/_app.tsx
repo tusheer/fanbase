@@ -4,6 +4,7 @@ import type { NextPage } from 'next';
 import trpc from '../src/config/trpc';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppRouter } from 'hero';
+import '../styles/tailwind.css';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;

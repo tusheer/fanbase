@@ -16,12 +16,10 @@ const SignupPage = () => {
         mode: 'onChange',
     });
 
-    const handleOnSubmit: SubmitHandler<CelebritySignupType> = (data) => {
+    const handleOnSubmit: SubmitHandler<CelebritySignupType> = () => {
         if (!isValid) {
             return;
         }
-
-        console.log(data);
     };
 
     return (

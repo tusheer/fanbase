@@ -11,7 +11,7 @@ export default function Web() {
     };
 
     return (
-        <div>
+        <div className="bg-dh-yellow-500">
             <button style={{ marginBottom: '20px' }} onClick={handleCreateUser}>
                 Create New User
             </button>

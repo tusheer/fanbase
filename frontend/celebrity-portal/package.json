@@ -3,10 +3,11 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "dev": "next dev",
+        "dev": "concurrently \"next dev\"",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint"
+        "lint": "next lint",
+        "tailwind:watch": "TAILWIND_MODE=watch postcss styles/tailwind.css -o styles/build.css --watch"
     },
     "dependencies": {
         "@hookform/resolvers": "^2.9.10",
@@ -21,17 +22,21 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-hook-form": "^7.41.5",
+        "schema": "*",
         "superjson": "^1.12.1",
         "ui": "*",
-        "zod": "^3.20.2",
-        "schema": "*"
+        "zod": "^3.20.2"
     },
     "devDependencies": {
         "@types/node": "^18.11.18",
         "@types/react": "^18.0.26",
         "@types/react-dom": "^18.0.10",
+        "autoprefixer": "^10.4.13",
+        "concurrently": "^7.6.0",
         "eslint": "8.31.0",
         "eslint-config-custom-react": "*",
+        "postcss": "^8.4.21",
+        "tailwindcss": "^3.2.4",
         "tsconfig": "*",
         "typescript": "^4.9.4"
     }
