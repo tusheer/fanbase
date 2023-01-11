@@ -17,30 +17,39 @@ model Admin {
 }
 
 model Celebrity {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  username  String    @unique
-  firstName String?
-  lastName  String?
-  phone     Int?
-  products  Product[]
-  password  String    @db.Text
-  createdAt DateTime  @default(now())
-  updateAt  DateTime  @updatedAt
-  country   String?
+  id            String       @id @default(cuid())
+  email         String       @unique
+  username      String       @unique
+  firstName     String?
+  lastName      String?
+  phone         Int?
+  password      String       @db.Text
+  createdAt     DateTime     @default(now())
+  updateAt      DateTime     @updatedAt
+  country       String?
+  shop          Shop[]
+  Product       Product[]
+  profileImage  String?
+  coverImage    String?
+  socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  socialMediaId String
+  topFan        PublicUser[]
 }
 
 model PublicUser {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  username  String   @unique
-  firstName String?
-  lastName  String?
-  phone     Int?
-  password  String   @db.Text
-  createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
-  country   String?
+  id            String       @id @default(cuid())
+  email         String       @unique
+  username      String?      @unique
+  firstName     String?
+  lastName      String?
+  phone         Int?
+  password      String       @db.Text
+  createdAt     DateTime     @default(now())
+  updateAt      DateTime     @updatedAt
+  country       String?
+  socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
+  socialMediaId String?
+  fan           Celebrity[]
 }
 
 model Product {
@@ -51,6 +60,18 @@ model Product {
   updatedAt   DateTime       @updatedAt
   Celebrity   Celebrity?     @relation(fields: [celebrityId], references: [id])
   celebrityId String?
+  Shop        Shop?          @relation(fields: [shopId], references: [id])
+  shopId      String?
+  type        String
+}
+
+model Shop {
+  id          String     @id @default(cuid())
+  name        String
+  products    Product[]
+  Celebrity   Celebrity? @relation(fields: [celebrityId], references: [id])
+  celebrityId String?
+  type        String
 }
 
 model ProductImage {
@@ -64,4 +85,14 @@ model ProductImage {
   sizes       String[]
   Product     Product? @relation(fields: [productId], references: [id])
   productId   String?
+}
+
+model SocialMedia {
+  id         String       @id
+  facebook   String?      @unique
+  youtube    String?      @unique
+  tiktok     String?      @unique
+  instragram String?      @unique
+  Celebrity  Celebrity[]
+  PublicUser PublicUser[]
 }
