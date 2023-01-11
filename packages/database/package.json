@@ -5,11 +5,15 @@
     "types": "./index.ts",
     "scripts": {
         "db:generate": "prisma generate dev --name init",
-        "db:push": "prisma db push --skip-generate",
+        "db:push": "prisma db push --skip-generate --accept-data-loss",
         "db:studio": "prisma studio"
     },
+    "prisma": {
+        "seed": "ts-node prisma/seed.ts"
+    },
     "dependencies": {
-        "@prisma/client": "^4.8.1"
+        "@prisma/client": "^4.8.1",
+        "ts-node": "^10.9.1"
     },
     "devDependencies": {
         "prisma": "^4.8.1"

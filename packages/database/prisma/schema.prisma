@@ -11,6 +11,8 @@ datasource db {
 model Admin {
   id        String   @id @default(cuid())
   email     String   @unique
+  firstName String
+  lastName  String
   password  String?  @db.Text
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
