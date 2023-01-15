@@ -9,9 +9,7 @@
     ],
     "license": "MIT",
     "scripts": {
-        "lint": "TIMING=1 eslint \"**/*.ts*\"",
-        "build": "tsup",
-        "dev": "npm run build -- --watch"
+        "lint": "TIMING=1 eslint \"**/*.ts*\""
     },
     "devDependencies": {
         "@types/react-dom": "^18.0.10",

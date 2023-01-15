@@ -3,7 +3,7 @@ import { celebritySignupSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { TextInput } from 'ui/components/TextInput';
+import { TextInput } from 'ui/components';
 
 type CelebritySignupType = z.infer<typeof celebritySignupSchema>;
 
