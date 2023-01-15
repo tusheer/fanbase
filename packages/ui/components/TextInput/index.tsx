@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes, forwardRef, useId } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
     className?: string;
@@ -16,6 +17,11 @@ interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAre
 export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     ({ type = 'text', textArea, errorText, label, className = '', rows = 2, error, name = '', ...rest }, ref) => {
         const uid = useId();
+
+        const variants = {
+            open: { opacity: 1, y: 0 },
+            closed: { opacity: 0, y: 5 },
+        };
 
         return (
             <div className={className}>
@@ -35,11 +41,16 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
                         {...rest}
                     />
                 )}
-                {errorText && error ? (
-                    <small className="text-red-600 text-sm" role="alert">
+                <AnimatePresence>
+                    <motion.small
+                        variants={variants}
+                        animate={error && errorText ? 'open' : 'closed'}
+                        className="text-red-600 text-sm block"
+                        role="alert"
+                    >
                         {errorText}
-                    </small>
-                ) : null}
+                    </motion.small>
+                </AnimatePresence>
             </div>
         );
     }
