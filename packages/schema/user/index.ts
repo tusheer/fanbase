@@ -1,4 +1,4 @@
-import { object, string } from 'zod';
+import { object, string, ZodIssueCode } from 'zod';
 
 export const celebritySignupSchema = object({
     email: string().email(),
@@ -6,6 +6,15 @@ export const celebritySignupSchema = object({
     firstName: string().min(1),
     lastName: string().min(1),
     phoneNumber: string().optional(),
+    confirmPassword: string().min(6),
+}).superRefine(({ confirmPassword, password }, ctx) => {
+    if (confirmPassword !== password) {
+        ctx.addIssue({
+            code: ZodIssueCode.custom,
+            message: 'Passworld should match',
+            path: ['confirmPassword'],
+        });
+    }
 });
 
 export const adminSignupSchema = object({

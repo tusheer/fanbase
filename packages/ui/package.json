@@ -12,14 +12,17 @@
         "lint": "TIMING=1 eslint \"**/*.ts*\""
     },
     "devDependencies": {
-        "@types/react-dom": "^18.0.10",
-        "eslint": "^8.31.0",
-        "react": "^18.2.0",
-        "tsconfig": "*",
-        "next": "^13.1.2",
         "@types/node": "^18.11.18",
         "@types/react": "^18.0.26",
-        "typescript": "^4.9.4",
-        "eslint-config-custom-react": "*"
+        "@types/react-dom": "^18.0.10",
+        "eslint": "^8.31.0",
+        "eslint-config-custom-react": "*",
+        "next": "^13.1.2",
+        "react": "^18.2.0",
+        "tsconfig": "*",
+        "typescript": "^4.9.4"
+    },
+    "dependencies": {
+        "tiny-invariant": "^1.3.1"
     }
 }

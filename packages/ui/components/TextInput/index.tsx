@@ -19,7 +19,7 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
 
         return (
             <div className={className}>
-                <label htmlFor={uid + name} className="block mb-2 text-sm font-medium text-gray-900  dark:text-white">
+                <label htmlFor={uid + name} className="block mb-1.5 text-sm font-medium text-gray-900  dark:text-white">
                     {label}
                 </label>
                 {textArea ? (
