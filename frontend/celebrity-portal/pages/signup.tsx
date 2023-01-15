@@ -24,13 +24,20 @@ const SignupPage = () => {
     };
 
     return (
-        <div>
-            <h1>Signup celebrity</h1>
-
-            <form onSubmit={handleSubmit(handleOnSubmit)}>
-                <TextInput />
-                <button type="submit">Submit</button>
-            </form>
+        <div className="min-h-screen pt-20 px-5 bg-gray-50">
+            <div className="max-w-2xl block p-7 bg-white border rounded-md mx-auto">
+                <h1 className="text-3xl mb-8 font-medium">Signup celebrity</h1>
+                <form onSubmit={handleSubmit(handleOnSubmit)}>
+                    <TextInput className="mb-2.5" label="First Name" />
+                    <TextInput label="Second Name" />
+                    <button
+                        className="mt-7 bg-gray-800 rounded-md h-10 text-white text-sm font-medium px-7 hover:bg-gray-900"
+                        type="submit"
+                    >
+                        Submit
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };
