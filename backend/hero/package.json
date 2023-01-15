@@ -2,23 +2,12 @@
     "name": "hero",
     "version": "1.0.0",
     "description": "",
-    "files": [
-        "dist"
-    ],
-    "main": "./dist/server.mjs",
-    "types": "./dist/server.d.ts",
-    "exports": {
-        ".": {
-            "import": "./dist/server.mjs",
-            "require": "./dist/server.js"
-        }
-    },
+    "main": "./server.ts",
     "scripts": {
         "build": "tsup",
-        "build:watch": "npm run build -- --watch",
         "build:ts": "tsup --env.NODE_ENV production",
         "copy:assets": "cpy 'src/generated/*.json' dist/generated",
-        "dev": "concurrently \"npm run dev:watch\" \"npm run build:watch\"",
+        "dev": "npm run dev:watch",
         "dev:watch": "tsx watch --clear-screen=false server.ts",
         "start": "tsx server.ts",
         "start:prod": "node dist/server.js",

@@ -1,20 +1,12 @@
-import trpc from '../src/config/trpc';
+import Link from 'next/link';
 
 export default function Web() {
-    const createUser = trpc.createUser.useMutation();
-
-    const handleCreateUser = async () => {
-        createUser.mutate({
-            email: Number(new Date()) + 'nedata@gmail.com',
-            name: 'NEw Data',
-        });
-    };
-
     return (
         <div className="bg-dh-yellow-500">
-            <button style={{ marginBottom: '20px' }} onClick={handleCreateUser}>
-                Create New User
-            </button>
+            <Link href={'/signup'}>
+                <button style={{ marginBottom: '20px' }}>Create New User</button>
+            </Link>
+
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}></div>
         </div>
     );
