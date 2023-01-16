@@ -33,9 +33,15 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
 
         return (
             <div className={className}>
-                <label htmlFor={uid + name} className="block mb-1.5 text-sm font-medium text-gray-900  dark:text-white">
-                    {label}
-                </label>
+                {label ? (
+                    <label
+                        htmlFor={uid + name}
+                        className="block mb-1.5 text-sm font-medium text-gray-900  dark:text-white"
+                    >
+                        {label}
+                    </label>
+                ) : null}
+
                 {textArea ? (
                     <textarea {...rest} rows={rows}></textarea>
                 ) : (
