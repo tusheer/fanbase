@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { celebritySignupSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
 import { TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
+import BaseLayout from '../src/layouts/BaseLayout';
 
 type CelebritySignupType = z.infer<typeof celebritySignupSchema>;
 
@@ -30,8 +31,8 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="min-h-screen pt-20 px-5 bg-gray-50">
-            <div className="max-w-2xl block p-7 bg-white border rounded-md mx-auto">
+        <div className="pt-20 px-5">
+            <div className="max-w-3xl block p-7 bg-white border rounded-md mx-auto">
                 <h1 className="text-3xl mb-8 text-gray-800 font-medium">Signup celebrity</h1>
                 <form onSubmit={handleSubmit(handleOnSubmit)}>
                     <div className="mb-4 flex gap-5">
@@ -95,6 +96,10 @@ const SignupPage = () => {
             </div>
         </div>
     );
+};
+
+SignupPage.getLayout = (page: ReactNode) => {
+    return <BaseLayout className="min-h-screen bg-gray-50">{page}</BaseLayout>;
 };
 
 export default SignupPage;

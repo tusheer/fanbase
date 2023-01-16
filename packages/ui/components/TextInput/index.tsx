@@ -1,5 +1,6 @@
 import React, { InputHTMLAttributes, forwardRef, useId } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { cva } from 'class-variance-authority';
 
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
     className?: string;
@@ -14,14 +15,21 @@ interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAre
     startIcon?: React.ReactElement;
 }
 
+const inputCva = cva(
+    'bg-gray-50 border outline-0 text-gray-900 text-sm rounded-md focus:ring-1 block w-full px-2.5 py-1 h-10',
+    {
+        variants: {
+            error: {
+                true: 'border-red-500  focus:ring-red-600   focus:border-red-600',
+                false: ' border-gray-300  focus:ring-gray-500   focus:border-gray-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500',
+            },
+        },
+    }
+);
+
 export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     ({ type = 'text', textArea, errorText, label, className = '', rows = 2, error, name = '', ...rest }, ref) => {
         const uid = useId();
-
-        const variants = {
-            open: { opacity: 1, y: 0 },
-            closed: { opacity: 0, y: 5 },
-        };
 
         return (
             <div className={className}>
@@ -37,19 +45,22 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
                         id={uid + name}
                         name={name}
                         aria-invalid={error}
-                        className="bg-gray-50 border border-gray-300 outline-0 text-gray-900 text-sm rounded-md focus:ring-1 focus:ring-gray-500   focus:border-gray-500 block w-full px-2.5 py-1 h-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                        className={inputCva({ error })}
                         {...rest}
                     />
                 )}
                 <AnimatePresence>
-                    <motion.small
-                        variants={variants}
-                        animate={error && errorText ? 'open' : 'closed'}
-                        className="text-red-600 text-sm block"
-                        role="alert"
-                    >
-                        {errorText}
-                    </motion.small>
+                    {error && errorText ? (
+                        <motion.small
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 4 }}
+                            className="text-red-600 text-sm block"
+                            role="alert"
+                        >
+                            {errorText}
+                        </motion.small>
+                    ) : null}
                 </AnimatePresence>
             </div>
         );
