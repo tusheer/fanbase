@@ -34,8 +34,8 @@ model Celebrity {
   profileImage  String?
   coverImage    String?
   socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  socialMediaId String
   topFan        PublicUser[]
+  socialMediaId String?
 }
 
 model PublicUser {

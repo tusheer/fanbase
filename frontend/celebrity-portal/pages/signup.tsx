@@ -2,12 +2,15 @@ import React from 'react';
 import { celebritySignupSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import z from 'zod';
 import { TextInput } from 'ui/components';
+import trpc from '../src/config/trpc';
 
 type CelebritySignupType = z.infer<typeof celebritySignupSchema>;
 
 const SignupPage = () => {
+    const ceateUser = trpc.user.createCelebrityUser.useMutation();
+
     const {
         register,
         handleSubmit,
@@ -17,12 +20,13 @@ const SignupPage = () => {
         mode: 'onSubmit',
     });
 
-    const handleOnSubmit: SubmitHandler<CelebritySignupType> = (data) => {
+    const handleOnSubmit: SubmitHandler<CelebritySignupType> = async (data) => {
         if (!isValid) {
             return;
         }
 
-        console.log(data);
+        const response = await ceateUser.mutateAsync(data);
+        console.log(response);
     };
 
     return (

@@ -5,7 +5,7 @@ export const celebritySignupSchema = object({
     password: string().min(6),
     firstName: string().min(1),
     lastName: string().min(1),
-    phoneNumber: string().optional(),
+    phoneNumber: string().min(11).optional(),
     confirmPassword: string().min(6),
 }).superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

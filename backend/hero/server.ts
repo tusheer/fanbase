@@ -2,40 +2,13 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import z from 'zod';
 import customConfig from './utils/default';
-import prisma, { connectDB } from './utils/prisma';
-import { protectedProcedure, router, Context, createContext } from './utils/trpc';
-import { TRPCError } from '@trpc/server';
+import { connectDB } from './utils/prisma';
+import { router, Context, createContext } from './utils/trpc';
+import userRoute from './router/user';
 
 export const appRouter = router({
-    createUser: protectedProcedure
-        .input(
-            z.object({
-                name: z.string(),
-                email: z.string().email(),
-            })
-        )
-        .mutation(async ({ input: { email } }) => {
-            try {
-                const user = await prisma.celebrity.create({
-                    data: {
-                        email,
-                        password: '',
-                        username: '',
-                    },
-                });
-                return {
-                    ...user,
-                };
-            } catch (error) {
-                throw new TRPCError({
-                    code: 'BAD_REQUEST',
-                    message: 'An unexpected error occurred, please try again later.',
-                    cause: error,
-                });
-            }
-        }),
+    user: userRoute,
 });
 
 export type AppRouter = typeof appRouter;
