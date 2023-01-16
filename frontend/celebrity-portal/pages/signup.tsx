@@ -3,7 +3,7 @@ import { celebritySignupSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import z from 'zod';
-import { TextInput } from 'ui/components';
+import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
 
@@ -32,8 +32,16 @@ const SignupPage = () => {
 
     return (
         <div className="pt-20 px-5">
-            <div className="max-w-3xl block p-7 bg-white border rounded-md mx-auto">
-                <h1 className="text-3xl mb-8 text-gray-800 font-medium">Signup celebrity</h1>
+            <div className="max-w-3xl text-center px-10 mx-auto">
+                <h1 className="text-3xl mb-5 text-gray-800 font-semibold text-transparent  bg-clip-text bg-gradient-to-tr from-brand-main to-brand-600">
+                    Signup celebrity account
+                </h1>
+                <p className="mb-8 max-w-xl text-center mx-auto text-gray-700">
+                    Orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
+                </p>
+            </div>
+
+            <div className="max-w-2xl block py-8 px-7 bg-white border rounded-md mx-auto">
                 <form onSubmit={handleSubmit(handleOnSubmit)}>
                     <div className="mb-4 flex gap-5">
                         <TextInput
@@ -86,12 +94,9 @@ const SignupPage = () => {
                         />
                     </div>
 
-                    <button
-                        className="mt-7 bg-gray-800 rounded-md h-10 text-white text-sm font-medium px-7 hover:bg-gray-900"
-                        type="submit"
-                    >
+                    <Button className="mt-7" type="submit">
                         Submit
-                    </button>
+                    </Button>
                 </form>
             </div>
         </div>
@@ -99,7 +104,7 @@ const SignupPage = () => {
 };
 
 SignupPage.getLayout = (page: ReactNode) => {
-    return <BaseLayout className="min-h-screen bg-gray-50">{page}</BaseLayout>;
+    return <BaseLayout className="min-h-screen bg-gray-50 bg-opacity-80">{page}</BaseLayout>;
 };
 
 export default SignupPage;

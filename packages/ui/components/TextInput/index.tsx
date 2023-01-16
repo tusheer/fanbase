@@ -20,8 +20,8 @@ const inputCva = cva(
     {
         variants: {
             error: {
-                true: 'border-red-500  focus:ring-red-600   focus:border-red-600',
-                false: ' border-gray-300  focus:ring-gray-500   focus:border-gray-500  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500',
+                true: 'border-red-500  focus:ring-red-400   focus:border-red-400',
+                false: ' border-gray-300  focus:ring-brand-main   focus:border-brand-main  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500',
             },
         },
     }
