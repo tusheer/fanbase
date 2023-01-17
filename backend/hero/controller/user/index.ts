@@ -24,24 +24,6 @@ const refreshTokenCookieOptions = {
     expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 60 * 1000),
 };
 
-export const signTokens = async (user: Prisma.CelebrityCreateInput) => {
-    // 1. Create Session
-    redisClient.set(`${user.id}`, JSON.stringify(user), {
-        EX: customConfig.redisCacheExpiresIn * 60,
-    });
-
-    // 2. Create Access and Refresh tokens
-    const access_token = signJwt({ sub: user.id }, 'accessTokenPrivateKey', {
-        expiresIn: `${customConfig.accessTokenExpiresIn}m`,
-    });
-
-    const refresh_token = signJwt({ sub: user.id }, 'refreshTokenPrivateKey', {
-        expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
-    });
-
-    return { access_token, refresh_token };
-};
-
 export const createCelebrityUserController = async ({
     input: { password, email, firstName, lastName, phoneNumber },
     ctx,
@@ -84,4 +66,22 @@ export const createCelebrityUserController = async ({
             message: 'Bad Request',
         });
     }
+};
+
+export const signTokens = async (user: Prisma.CelebrityCreateInput) => {
+    // 1. Create Session
+    redisClient.set(`${user.id}`, JSON.stringify(user), {
+        EX: customConfig.redisCacheExpiresIn * 60,
+    });
+
+    // 2. Create Access and Refresh tokens
+    const access_token = signJwt({ sub: user.id }, 'accessTokenPrivateKey', {
+        expiresIn: `${customConfig.accessTokenExpiresIn}m`,
+    });
+
+    const refresh_token = signJwt({ sub: user.id }, 'refreshTokenPrivateKey', {
+        expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
+    });
+
+    return { access_token, refresh_token };
 };
