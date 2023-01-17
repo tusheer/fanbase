@@ -54,8 +54,6 @@ export const createCelebrityUserController = async ({
         // Create the Access and refresh Tokens
         const { access_token, refresh_token } = signTokens(celebrityUser);
 
-        console.log(access_token);
-
         // // Send Access Token in Cookie
         ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
         ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
@@ -76,12 +74,6 @@ export const createCelebrityUserController = async ({
 
 export const signTokens = (user: { id: string; email: string }) => {
     try {
-        console.log('start');
-        // 1. Create Session
-        redisClient.set(`${user.id}`, JSON.stringify(user), {
-            EX: customConfig.redisCacheExpiresIn * 60,
-        });
-
         // 2. Create Access and Refresh tokens
         const access_token = signJwt(user, 'accessTokenPrivateKey', {
             expiresIn: `${customConfig.accessTokenExpiresIn}m`,
@@ -89,6 +81,11 @@ export const signTokens = (user: { id: string; email: string }) => {
 
         const refresh_token = signJwt(user, 'refreshTokenPrivateKey', {
             expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
+        });
+
+        // 1. Create Session
+        redisClient.set(`${user.id}`, JSON.stringify({ ...user, refresh_token }), {
+            EX: customConfig.redisCacheExpiresIn * 60,
         });
 
         return { access_token, refresh_token };

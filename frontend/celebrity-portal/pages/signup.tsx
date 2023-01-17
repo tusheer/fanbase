@@ -22,9 +22,7 @@ const SignupPage = () => {
         if (!isValid) {
             return;
         }
-
-        const response = await ceateUser.mutateAsync(data);
-        console.log(response);
+        await ceateUser.mutateAsync(data);
     };
 
     return (
@@ -58,18 +56,18 @@ const SignupPage = () => {
                     </div>
                     <div className="mb-4 flex gap-5">
                         <TextInput
-                            error={!!errors.password}
-                            errorText={errors.phoneNumber?.message}
-                            {...register('phoneNumber')}
-                            label="Phone Number"
-                            className="w-6/12"
-                        />
-                        <TextInput
                             className="w-6/12"
                             error={!!errors.email}
                             errorText={errors.email?.message}
                             {...register('email')}
                             label="Email"
+                        />
+                        <TextInput
+                            error={!!errors.phoneNumber}
+                            errorText={errors.phoneNumber?.message}
+                            {...register('phoneNumber')}
+                            label="Phone Number"
+                            className="w-6/12"
                         />
                     </div>
                     <div className="flex gap-5">
