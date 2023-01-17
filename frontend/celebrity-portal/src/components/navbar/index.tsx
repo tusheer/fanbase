@@ -12,7 +12,10 @@ const Navbar = () => {
                     </b>
                 </Link>
 
-                <div>
+                <div className="flex gap-9  items-center">
+                    <Link className="text-base font-medium hover:text-brand-main active:text-brand-500" href="/signin">
+                        Signin
+                    </Link>
                     <Link href={'/signup'}>
                         <Button rounded>Signup</Button>
                     </Link>

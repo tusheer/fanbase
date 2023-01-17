@@ -17,9 +17,10 @@ export const celebritySignupSchema = object({
     }
 });
 
-export const adminSignupSchema = object({
-    email: string(),
-    password: string(),
+export const signinSchema = object({
+    email: string().email(),
+    password: string().min(6),
 });
 
 export type CelebritySignupType = ZodInfer<typeof celebritySignupSchema>;
+export type SigninType = ZodInfer<typeof signinSchema>;
