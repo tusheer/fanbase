@@ -1,11 +1,12 @@
 import { CelebritySignupType } from 'schema';
-import prisma, { Prisma } from '../../utils/prisma';
+import prisma from '../../utils/prisma';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
 import { Context } from '../../server';
 import { CookieOptions } from 'express';
 import customConfig from '../../config/default';
 import { signJwt } from '../../utils/jwt';
+import redisClient from '../../utils/connectRedis';
 
 // [...] Cookie options
 const cookieOptions: CookieOptions = {
@@ -47,10 +48,15 @@ export const createCelebrityUserController = async ({
                 username: true,
             },
         });
-        // Create the Access and refresh Tokens
-        const { access_token, refresh_token } = await signToken(user);
 
-        // Send Access Token in Cookie
+        console.log(celebrityUser);
+
+        // Create the Access and refresh Tokens
+        const { access_token, refresh_token } = signTokens(celebrityUser);
+
+        console.log(access_token);
+
+        // // Send Access Token in Cookie
         ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
         ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
         ctx.res.cookie('logged_in', true, {
@@ -58,7 +64,7 @@ export const createCelebrityUserController = async ({
             httpOnly: false,
         });
 
-        return { ...celebrityUser };
+        return celebrityUser;
     } catch (error) {
         throw new TRPCError({
             cause: error,
@@ -68,20 +74,29 @@ export const createCelebrityUserController = async ({
     }
 };
 
-export const signTokens = async (user: Prisma.CelebrityCreateInput) => {
-    // 1. Create Session
-    redisClient.set(`${user.id}`, JSON.stringify(user), {
-        EX: customConfig.redisCacheExpiresIn * 60,
-    });
+export const signTokens = (user: { id: string; email: string }) => {
+    try {
+        console.log('start');
+        // 1. Create Session
+        redisClient.set(`${user.id}`, JSON.stringify(user), {
+            EX: customConfig.redisCacheExpiresIn * 60,
+        });
 
-    // 2. Create Access and Refresh tokens
-    const access_token = signJwt({ sub: user.id }, 'accessTokenPrivateKey', {
-        expiresIn: `${customConfig.accessTokenExpiresIn}m`,
-    });
+        // 2. Create Access and Refresh tokens
+        const access_token = signJwt(user, 'accessTokenPrivateKey', {
+            expiresIn: `${customConfig.accessTokenExpiresIn}m`,
+        });
 
-    const refresh_token = signJwt({ sub: user.id }, 'refreshTokenPrivateKey', {
-        expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
-    });
+        const refresh_token = signJwt(user, 'refreshTokenPrivateKey', {
+            expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
+        });
 
-    return { access_token, refresh_token };
+        return { access_token, refresh_token };
+    } catch (error) {
+        throw new TRPCError({
+            cause: error,
+            code: 'INTERNAL_SERVER_ERROR',
+            message: 'SERVER ERROR',
+        });
+    }
 };

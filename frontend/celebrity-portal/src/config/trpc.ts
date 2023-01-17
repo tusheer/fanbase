@@ -21,6 +21,12 @@ const trpc = createTRPCNext<AppRouter>({
                      * @link https://trpc.io/docs/ssr
                      **/
                     url: 'http://localhost:8000/api/trpc',
+                    fetch(url, options) {
+                        return fetch(url, {
+                            ...options,
+                            credentials: 'include',
+                        });
+                    },
                 }),
             ],
             transformer: SuperJSON,

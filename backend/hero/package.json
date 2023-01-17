@@ -25,6 +25,7 @@
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.0",
         "nookies": "^2.5.2",
+        "redis": "^4.5.1",
         "schema": "*",
         "superjson": "^1.12.1",
         "zod": "^3.20.2"

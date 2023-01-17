@@ -1,13 +1,10 @@
 import React, { ReactNode } from 'react';
-import { celebritySignupSchema } from 'schema';
+import { CelebritySignupType, celebritySignupSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import z from 'zod';
 import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
-
-type CelebritySignupType = z.infer<typeof celebritySignupSchema>;
 
 const SignupPage = () => {
     const ceateUser = trpc.user.createCelebrityUser.useMutation();

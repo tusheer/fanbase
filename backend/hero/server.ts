@@ -2,11 +2,12 @@ import express from 'express';
 import morgan from 'morgan';
 import cors from 'cors';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import customConfig from './utils/default';
+import customConfig from './config/default';
 import { connectDB } from './utils/prisma';
 import { router, Context, createContext } from './utils/trpc';
 import userRoute from './router/user';
 import cookieParser from 'cookie-parser';
+import redisClient, { connectRedis } from './utils/connectRedis';
 
 export const appRouter = router({
     user: userRoute,
@@ -36,6 +37,8 @@ app.use(
 const port = customConfig.port;
 app.listen(port, () => {
     connectDB();
+    connectRedis();
+    redisClient.on('error', (err) => console.log(err));
     console.log(`🚀 Server listening on port ${port}`);
 });
 
