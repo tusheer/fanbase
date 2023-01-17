@@ -1,4 +1,4 @@
-import { object, string, ZodIssueCode } from 'zod';
+import { object, string, ZodIssueCode, infer as ZodInfer } from 'zod';
 
 export const celebritySignupSchema = object({
     email: string().email(),
@@ -21,3 +21,5 @@ export const adminSignupSchema = object({
     email: string(),
     password: string(),
 });
+
+export type CelebritySignupType = ZodInfer<typeof celebritySignupSchema>;

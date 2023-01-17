@@ -6,6 +6,7 @@ import customConfig from './utils/default';
 import { connectDB } from './utils/prisma';
 import { router, Context, createContext } from './utils/trpc';
 import userRoute from './router/user';
+import cookieParser from 'cookie-parser';
 
 export const appRouter = router({
     user: userRoute,
@@ -17,6 +18,7 @@ const app = express();
 
 if (process.env.NODE_ENV !== 'production') app.use(morgan('dev'));
 
+app.use(cookieParser());
 app.use(
     cors({
         origin: [customConfig.origin, 'http://localhost:3000'],
