@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { CelebritySignupType, celebritySignupSchema } from 'schema';
+import { SigninType, signinSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, TextInput } from 'ui/components';
@@ -7,18 +7,18 @@ import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
 
 const SigninPage = () => {
-    const ceateUser = trpc.user.createCelebrityUser.useMutation();
+    const ceateUser = trpc.user.signinCelebrityUser.useMutation();
 
     const {
         register,
         handleSubmit,
         formState: { isValid, errors },
-    } = useForm<CelebritySignupType>({
-        resolver: zodResolver(celebritySignupSchema),
+    } = useForm<SigninType>({
+        resolver: zodResolver(signinSchema),
         mode: 'onSubmit',
     });
 
-    const handleOnSubmit: SubmitHandler<CelebritySignupType> = async (data) => {
+    const handleOnSubmit: SubmitHandler<SigninType> = async (data) => {
         if (!isValid) {
             return;
         }
@@ -39,18 +39,20 @@ const SigninPage = () => {
             <div className="max-w-2xl block py-8 px-7 bg-white border rounded-md mx-auto">
                 <form onSubmit={handleSubmit(handleOnSubmit)}>
                     <TextInput
-                        error={!!errors.firstName}
-                        errorText={errors.firstName?.message}
-                        {...register('firstName')}
-                        label="First Name"
+                        className="mb-5"
+                        type="email"
+                        error={!!errors.email}
+                        errorText={errors.email?.message}
+                        {...register('email')}
+                        label="Email"
                     />
                     <TextInput
-                        error={!!errors.lastName}
-                        errorText={errors.lastName?.message}
-                        {...register('lastName')}
-                        label="Second Name"
+                        type="password"
+                        error={!!errors.password}
+                        errorText={errors.password?.message}
+                        {...register('password')}
+                        label="Password"
                     />
-
                     <Button className="mt-7" type="submit">
                         Submit
                     </Button>

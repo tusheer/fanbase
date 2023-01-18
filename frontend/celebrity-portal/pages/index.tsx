@@ -16,7 +16,7 @@ export default function Web() {
                     quibusdam dolores nulla.
                 </p>
                 <div className="flex justify-center mt-8">
-                    <Link href={'/singup'}>
+                    <Link href={'/signup'}>
                         <Button>Singup</Button>
                     </Link>
                 </div>
