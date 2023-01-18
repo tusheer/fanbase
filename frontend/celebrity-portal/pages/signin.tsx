@@ -29,7 +29,7 @@ const SigninPage = () => {
         <div className="pt-20 px-5">
             <div className="max-w-3xl text-center px-10 mx-auto">
                 <h1 className="text-3xl mb-5 text-gray-800 font-semibold text-transparent  bg-clip-text bg-gradient-to-tr from-brand-main to-brand-600">
-                    Signup celebrity account
+                    Sigin celebrity account
                 </h1>
                 <p className="mb-8 max-w-xl text-center mx-auto text-gray-700">
                     Orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the

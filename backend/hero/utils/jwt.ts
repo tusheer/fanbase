@@ -3,19 +3,17 @@ import customConfig from '../config/default';
 import { TRPCError } from '@trpc/server';
 
 export const signJwt = (
-    payload: { [key: string]: string },
+    payload: { [key: string]: string | null },
     key: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey',
     options: SignOptions = {}
 ) => {
     const privateKey = Buffer.from(customConfig[key], 'base64').toString('ascii');
 
     try {
-        console.log({ key: customConfig[key] });
         const token = jwt.sign(payload, privateKey, {
             ...(options ? options : {}),
             algorithm: 'HS512',
         });
-        console.log('end');
         return token;
     } catch (error) {
         throw new TRPCError({

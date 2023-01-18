@@ -1,4 +1,4 @@
-import { CelebritySignupType } from 'schema';
+import { CelebritySignupType, SigninType } from 'schema';
 import prisma from '../../utils/prisma';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
@@ -49,7 +49,47 @@ export const createCelebrityUserController = async ({
             },
         });
 
-        console.log(celebrityUser);
+        // Create the Access and refresh Tokens
+        const { access_token, refresh_token } = signTokens(celebrityUser);
+
+        // // Send Access Token in Cookie
+        ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
+        ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
+        ctx.res.cookie('logged_in', true, {
+            ...cookieOptions,
+            httpOnly: false,
+        });
+
+        return celebrityUser;
+    } catch (error) {
+        throw new TRPCError({
+            cause: error,
+            code: 'BAD_REQUEST',
+            message: 'BAD REQUEST',
+        });
+    }
+};
+
+export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; ctx: Context }) => {
+    try {
+        const celebrityUser = await prisma.celebrity.findUnique({
+            where: {
+                email: input.email,
+            },
+
+            select: {
+                email: true,
+                id: true,
+                username: true,
+            },
+        });
+
+        if (!celebrityUser) {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'User is not exit',
+            });
+        }
 
         // Create the Access and refresh Tokens
         const { access_token, refresh_token } = signTokens(celebrityUser);
@@ -67,12 +107,12 @@ export const createCelebrityUserController = async ({
         throw new TRPCError({
             cause: error,
             code: 'BAD_REQUEST',
-            message: 'Bad Request',
+            message: 'BAD REQUEST',
         });
     }
 };
 
-export const signTokens = (user: { id: string; email: string }) => {
+export const signTokens = (user: { email: string; id: string; username: string | null }) => {
     try {
         // 2. Create Access and Refresh tokens
         const access_token = signJwt(user, 'accessTokenPrivateKey', {

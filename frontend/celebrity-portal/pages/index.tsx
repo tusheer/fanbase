@@ -7,7 +7,7 @@ export default function Web() {
     return (
         <>
             <section className="py-40 max-w-7xl px-5 mx-auto  ">
-                <h1 className="text-transparent  font-extrabold text-7xl max-w-4xl mx-auto text-center  bg-clip-text bg-gradient-to-tr from-brand-main to-brand-600">
+                <h1 className="text-transparent leading-tight  font-black text-6xl max-w-4xl mx-auto text-center  bg-clip-text bg-gradient-to-tr from-brand-main to-brand-600">
                     Fanbase, Grow with your amazing network
                 </h1>
                 <p className="max-w-4xl mx-auto text-center font-medium text-lg mt-8 text-gray-700">
