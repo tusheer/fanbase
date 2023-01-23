@@ -9,6 +9,7 @@ import { signJwt } from '../../utils/jwt';
 import redisClient from '../../utils/connectRedis';
 import { nanoid } from 'nanoid';
 // [...] Cookie options
+
 const cookieOptions: CookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
@@ -24,7 +25,7 @@ const refreshTokenCookieOptions = {
     ...cookieOptions,
     expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 60 * 1000),
 };
-
+//TODO : Add lodash for utils
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
 export const createCelebrityUserController = async ({
@@ -98,6 +99,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
                 email: true,
                 id: true,
                 username: true,
+                password: true,
             },
         });
 
@@ -108,8 +110,20 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             });
         }
 
+        const verifyPassword = await argon2.verify(celebrityUser.password, input.password);
+        if (!verifyPassword) {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+                message: 'BAD_REQUEST',
+            });
+        }
+
         // Create the Access and refresh Tokens
-        const { access_token, refresh_token } = signTokens(celebrityUser);
+        const { access_token, refresh_token } = signTokens({
+            email: celebrityUser.email,
+            id: celebrityUser.id,
+            username: celebrityUser.username,
+        });
 
         // // Send Access Token in Cookie
         ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
@@ -119,7 +133,11 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             httpOnly: false,
         });
 
-        return celebrityUser;
+        return {
+            email: celebrityUser.email,
+            id: celebrityUser.id,
+            username: celebrityUser.username,
+        };
     } catch (error) {
         throw new TRPCError({
             cause: error,
