@@ -9,6 +9,8 @@ import userRoute from './router/user';
 import cookieParser from 'cookie-parser';
 import redisClient, { connectRedis } from './utils/connectRedis';
 
+//TODO : Add lodash in packages
+
 export const appRouter = router({
     user: userRoute,
 });

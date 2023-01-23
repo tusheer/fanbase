@@ -7,7 +7,7 @@ import { CookieOptions } from 'express';
 import customConfig from '../../config/default';
 import { signJwt } from '../../utils/jwt';
 import redisClient from '../../utils/connectRedis';
-
+import { nanoid } from 'nanoid';
 // [...] Cookie options
 const cookieOptions: CookieOptions = {
     httpOnly: true,
@@ -24,6 +24,8 @@ const refreshTokenCookieOptions = {
     ...cookieOptions,
     expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 60 * 1000),
 };
+
+const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
 export const createCelebrityUserController = async ({
     input: { password, email, firstName, lastName, phoneNumber },
@@ -46,6 +48,7 @@ export const createCelebrityUserController = async ({
             });
         }
 
+        const username = `${stringReplace(firstName)}-${stringReplace(lastName)}-${nanoid(6)}`;
         const hashpassword = await argon2.hash(password);
         const celebrityUser = await prisma.celebrity.create({
             data: {
@@ -54,6 +57,7 @@ export const createCelebrityUserController = async ({
                 lastName,
                 password: hashpassword,
                 phone: Number(phoneNumber),
+                username,
             },
             select: {
                 email: true,
