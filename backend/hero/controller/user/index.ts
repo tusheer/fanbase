@@ -33,6 +33,19 @@ export const createCelebrityUserController = async ({
     ctx: Context;
 }) => {
     try {
+        const _user = await prisma.celebrity.findUnique({
+            where: {
+                email: email,
+            },
+        });
+
+        if (_user) {
+            throw new TRPCError({
+                code: 'UNAUTHORIZED',
+                message: 'User already exit',
+            });
+        }
+
         const hashpassword = await argon2.hash(password);
         const celebrityUser = await prisma.celebrity.create({
             data: {

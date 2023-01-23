@@ -6,8 +6,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
-        "tailwind:watch": "TAILWIND_MODE=watch postcss styles/tailwind.css -o styles/build.css --watch"
+        "lint": "next lint"
     },
     "dependencies": {
         "@hookform/resolvers": "^2.9.10",
