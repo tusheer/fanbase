@@ -5,7 +5,7 @@ export const celebritySignupSchema = object({
     password: string().min(6),
     firstName: string().min(1),
     lastName: string().min(1),
-    phoneNumber: z.string().refine((stg) => stg?.length === 0 || stg?.length > 11, { message: 'Required 11 length' }),
+    phoneNumber: z.string().refine((stg) => stg?.length === 0 || stg?.length > 10, { message: 'Required 11 length' }),
     confirmPassword: string().min(6),
 }).superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {

@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
+import Router from 'next/router';
 
 const SigninPage = () => {
     const ceateUser = trpc.user.signinCelebrityUser.useMutation();
@@ -22,7 +23,8 @@ const SigninPage = () => {
         if (!isValid) {
             return;
         }
-        await ceateUser.mutateAsync(data);
+        const response = await ceateUser.mutateAsync(data);
+        Router.push(`/${response.username}`);
     };
 
     return (

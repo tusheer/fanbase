@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
+import Router from 'next/router';
 
 const SignupPage = () => {
     const ceateUser = trpc.user.createCelebrityUser.useMutation();
@@ -22,7 +23,12 @@ const SignupPage = () => {
         if (!isValid) {
             return;
         }
-        await ceateUser.mutateAsync(data);
+        try {
+            const response = await ceateUser.mutateAsync(data);
+            Router.push(`/${response.username}`);
+        } catch (error) {
+            console.log('error');
+        }
     };
 
     return (
