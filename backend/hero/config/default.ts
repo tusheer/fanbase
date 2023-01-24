@@ -11,7 +11,7 @@ const customConfig: {
     redisCacheExpiresIn: number;
 } = {
     port: 8000,
-    accessTokenExpiresIn: 15,
+    accessTokenExpiresIn: 1,
     refreshTokenExpiresIn: 60,
     origin: 'http://localhost:3000',
     redisCacheExpiresIn: 60,

@@ -19,12 +19,12 @@ const cookieOptions: CookieOptions = {
 
 const accessTokenCookieOptions = {
     ...cookieOptions,
-    expires: new Date(Date.now() + customConfig.accessTokenExpiresIn * 60 * 1000),
+    expires: new Date(Date.now() + customConfig.accessTokenExpiresIn * 24 * 3600000),
 };
 
 const refreshTokenCookieOptions = {
     ...cookieOptions,
-    expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 60 * 1000),
+    expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 24 * 3600000),
 };
 
 //TODO : Add lodash for utils
@@ -221,9 +221,9 @@ const setUserInRedis = (
     }>
 ) => {
     // 1. Create Session
-    redisClient.set(`${user.username}`, JSON.stringify({ ...user }), {
-        EX: customConfig.redisCacheExpiresIn * 60,
-    });
+
+    //TODO : Need to set a expire date after 2 month
+    redisClient.set(`${user.username}`, JSON.stringify({ ...user }));
 };
 
 const deleteUserSessionInRedis = async (username: string, deviceUid: string) => {
