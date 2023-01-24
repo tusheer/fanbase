@@ -104,7 +104,7 @@ model SocialMedia {
 model Session {
   id           String      @id @default(cuid())
   userAgent    Json
-  refreshToken String
+  refreshToken String      @unique
   Celebrity    Celebrity?  @relation(fields: [celebrityId], references: [id])
   celebrityId  String?
   PublicUser   PublicUser? @relation(fields: [publicUserId], references: [id])
