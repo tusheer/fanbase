@@ -21,7 +21,7 @@ model Admin {
 model Celebrity {
   id            String       @id @default(cuid())
   email         String       @unique
-  username      String?      @unique
+  username      String       @unique
   firstName     String?
   lastName      String?
   phone         Int?
@@ -36,6 +36,7 @@ model Celebrity {
   socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
   topFan        PublicUser[]
   socialMediaId String?
+  session       Session[]
 }
 
 model PublicUser {
@@ -52,6 +53,7 @@ model PublicUser {
   socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
   socialMediaId String?
   fan           Celebrity[]
+  session       Session[]
 }
 
 model Product {
@@ -97,4 +99,14 @@ model SocialMedia {
   instragram String?      @unique
   Celebrity  Celebrity[]
   PublicUser PublicUser[]
+}
+
+model Session {
+  id           String      @id @default(cuid())
+  userAgent    Json
+  refreshToken String
+  Celebrity    Celebrity?  @relation(fields: [celebrityId], references: [id])
+  celebrityId  String?
+  PublicUser   PublicUser? @relation(fields: [publicUserId], references: [id])
+  publicUserId String?
 }

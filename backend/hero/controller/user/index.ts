@@ -8,6 +8,7 @@ import customConfig from '../../config/default';
 import { signJwt } from '../../utils/jwt';
 import redisClient from '../../utils/connectRedis';
 import { nanoid } from 'nanoid';
+import useragent from 'express-useragent';
 // [...] Cookie options
 
 const cookieOptions: CookieOptions = {
@@ -48,9 +49,11 @@ export const createCelebrityUserController = async ({
                 message: 'User already exit',
             });
         }
+        const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string);
 
         const username = `${stringReplace(firstName)}-${stringReplace(lastName)}-${nanoid(6)}`;
         const hashpassword = await argon2.hash(password);
+
         const celebrityUser = await prisma.celebrity.create({
             data: {
                 email,
@@ -59,11 +62,6 @@ export const createCelebrityUserController = async ({
                 password: hashpassword,
                 phone: Number(phoneNumber),
                 username,
-            },
-            select: {
-                email: true,
-                id: true,
-                username: true,
             },
         });
 
@@ -78,7 +76,23 @@ export const createCelebrityUserController = async ({
             httpOnly: false,
         });
 
-        return celebrityUser;
+        const session = await prisma.session.create({
+            data: {
+                refreshToken: refresh_token,
+                userAgent: JSON.stringify(deviceInfo),
+                celebrityId: celebrityUser.id,
+            },
+        });
+
+        setUserInRedis({
+            ...celebrityUser,
+            session: [session],
+        });
+
+        return {
+            username: celebrityUser.username,
+            id: celebrityUser.id,
+        };
     } catch (error) {
         throw new TRPCError({
             cause: error,
@@ -89,6 +103,12 @@ export const createCelebrityUserController = async ({
 };
 
 export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; ctx: Context }) => {
+    const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string);
+
+    const refresh_token = ctx.req.cookies.refresh_token;
+
+    console.log(refresh_token);
+
     try {
         const celebrityUser = await prisma.celebrity.findUnique({
             where: {
@@ -110,6 +130,8 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             });
         }
 
+        // await deleteUserSessionInRedis(celebrityUser.username);
+
         const verifyPassword = await argon2.verify(celebrityUser.password, input.password);
         if (!verifyPassword) {
             throw new TRPCError({
@@ -125,7 +147,16 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             username: celebrityUser.username,
         });
 
-        // // Send Access Token in Cookie
+        //Create sesstion for user agent
+        const session = await prisma.session.create({
+            data: {
+                refreshToken: refresh_token,
+                userAgent: JSON.stringify(deviceInfo),
+                celebrityId: celebrityUser.id,
+            },
+        });
+
+        //  Send Access Token in Cookie
         ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
         ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
         ctx.res.cookie('logged_in', true, {
@@ -147,6 +178,18 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
     }
 };
 
+const setUserInRedis = (user: any) => {
+    // 1. Create Session
+    redisClient.set(`${user.username}`, JSON.stringify({ ...user }), {
+        EX: customConfig.redisCacheExpiresIn * 60,
+    });
+};
+
+const deleteUserSessionInRedis = async (username: string) => {
+    const user = await redisClient.get(username);
+    console.log(JSON.parse(user));
+};
+
 export const signTokens = (user: { email: string; id: string; username: string | null }) => {
     try {
         // 2. Create Access and Refresh tokens
@@ -156,11 +199,6 @@ export const signTokens = (user: { email: string; id: string; username: string |
 
         const refresh_token = signJwt(user, 'refreshTokenPrivateKey', {
             expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
-        });
-
-        // 1. Create Session
-        redisClient.set(`${user.id}`, JSON.stringify({ ...user, refresh_token }), {
-            EX: customConfig.redisCacheExpiresIn * 60,
         });
 
         return { access_token, refresh_token };
