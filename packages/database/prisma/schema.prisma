@@ -24,7 +24,7 @@ model Celebrity {
   username      String       @unique
   firstName     String?
   lastName      String?
-  phone         Int?
+  phone         String?
   password      String       @db.Text
   createdAt     DateTime     @default(now())
   updateAt      DateTime     @updatedAt

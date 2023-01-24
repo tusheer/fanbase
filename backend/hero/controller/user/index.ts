@@ -26,7 +26,9 @@ const refreshTokenCookieOptions = {
     ...cookieOptions,
     expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 60 * 1000),
 };
+
 //TODO : Add lodash for utils
+
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
 export const createCelebrityUserController = async ({
@@ -60,20 +62,13 @@ export const createCelebrityUserController = async ({
                 firstName,
                 lastName,
                 password: hashpassword,
-                phone: Number(phoneNumber),
+                phone: phoneNumber,
                 username,
             },
         });
 
         // Create the Access and refresh Tokens
         const { access_token, refresh_token } = signTokens(celebrityUser);
-
-        ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
-        ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
-        ctx.res.cookie('logged_in', true, {
-            ...cookieOptions,
-            httpOnly: false,
-        });
 
         const session = await prisma.session.create({
             data: {
@@ -82,6 +77,18 @@ export const createCelebrityUserController = async ({
                 celebrityId: celebrityUser.id,
             },
         });
+
+        ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
+        ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
+        ctx.res.cookie('device_uid', session.id, {
+            ...cookieOptions,
+            httpOnly: true,
+        });
+        ctx.res.cookie('logged_in', true, {
+            ...cookieOptions,
+            httpOnly: false,
+        });
+
         setUserInRedis({
             ...celebrityUser,
             session: [session],
@@ -133,23 +140,24 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
         }
 
         //if user trying to singin from the same device, then we remove his currect session and reassign
+        const device_uid = ctx.req.cookies.device_uid;
+        const findSessionInUser = celebrityUser.session.find((session) => session.id === device_uid);
 
-        const refreshToken = ctx.req.cookies.refresh_token;
-        const findSessionInUser = celebrityUser.session.find((session) => session.refreshToken === refreshToken);
         if (findSessionInUser) {
             await prisma.session.delete({
                 where: {
-                    refreshToken,
+                    id: device_uid,
                 },
                 include: {
                     Celebrity: true,
                 },
             });
 
-            deleteUserSessionInRedis(celebrityUser.username, refreshToken);
+            deleteUserSessionInRedis(celebrityUser.username, device_uid);
 
             ctx.res.clearCookie('access_token');
             ctx.res.clearCookie('refresh_token');
+            ctx.res.clearCookie('device_uid');
             ctx.res.clearCookie('logged_in');
         }
 
@@ -170,7 +178,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
         });
 
         //remove previous session and add new
-        const sessionIndex = celebrityUser.session.findIndex((data) => data.refreshToken === refreshToken);
+        const sessionIndex = celebrityUser.session.findIndex((data) => data.id === device_uid);
         celebrityUser.session.splice(sessionIndex, 1, session);
 
         setUserInRedis({
@@ -180,6 +188,10 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
         //  Send Access Token in Cookie
         ctx.res.cookie('access_token', access_token, accessTokenCookieOptions);
         ctx.res.cookie('refresh_token', refresh_token, refreshTokenCookieOptions);
+        ctx.res.cookie('device_uid', session.id, {
+            ...cookieOptions,
+            httpOnly: true,
+        });
         ctx.res.cookie('logged_in', true, {
             ...cookieOptions,
             httpOnly: false,
@@ -199,7 +211,6 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
     }
 };
 
-//TODO Add proper typing
 const setUserInRedis = (
     user: Prisma.CelebrityGetPayload<{
         select: {
@@ -215,8 +226,7 @@ const setUserInRedis = (
     });
 };
 
-//TODO : Check user type from database
-const deleteUserSessionInRedis = async (username: string, refreshToken: string) => {
+const deleteUserSessionInRedis = async (username: string, deviceUid: string) => {
     const jsonUser = (await redisClient.get(username)) as string;
 
     if (jsonUser) {
@@ -226,8 +236,7 @@ const deleteUserSessionInRedis = async (username: string, refreshToken: string) 
             };
         }>;
 
-        console.log(user);
-        const sessionIndex = user.session.findIndex((data) => data.refreshToken === refreshToken);
+        const sessionIndex = user.session.findIndex((data) => data.id === deviceUid);
         user.session.splice(sessionIndex, 1);
     }
 };
