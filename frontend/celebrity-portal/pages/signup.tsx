@@ -24,8 +24,8 @@ const SignupPage = () => {
             return;
         }
         try {
-            const response = await ceateUser.mutateAsync(data);
-            Router.push(`/${response.username}`);
+            await ceateUser.mutateAsync(data);
+            Router.push(`/`);
         } catch (error) {
             console.log('error');
         }

@@ -23,8 +23,8 @@ const SigninPage = () => {
         if (!isValid) {
             return;
         }
-        const response = await ceateUser.mutateAsync(data);
-        Router.push(`/${response.username}`);
+        await ceateUser.mutateAsync(data);
+        Router.push(`/`);
     };
 
     return (
