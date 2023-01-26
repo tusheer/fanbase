@@ -1,11 +1,11 @@
-import { object, string, optional, union, ZodIssueCode, infer as ZodInfer, number, z } from 'zod';
+import { object, string, ZodIssueCode, infer as ZodInfer } from 'zod';
 
 export const celebritySignupSchema = object({
     email: string().email(),
     password: string().min(6),
     firstName: string().min(1),
     lastName: string().min(1),
-    phoneNumber: z.string().refine((stg) => stg?.length === 0 || stg?.length > 10, { message: 'Required 11 length' }),
+    phoneNumber: string().refine((stg) => stg?.length === 0 || stg?.length > 10, { message: 'Required 11 length' }),
     confirmPassword: string().min(6),
 }).superRefine(({ confirmPassword, password }, ctx) => {
     if (confirmPassword !== password) {
