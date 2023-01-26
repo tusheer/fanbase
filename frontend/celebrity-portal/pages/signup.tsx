@@ -1,11 +1,12 @@
 import React, { ReactNode } from 'react';
 import { CelebritySignupType, celebritySignupSchema } from 'schema';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
 import Router from 'next/router';
+import zodSchemaResolver from '../src/utils/zodSchemaParse';
+import removeNullOrEmpty from '../src/utils/removeNullOrEmpty';
 
 const SignupPage = () => {
     const ceateUser = trpc.user.createCelebrityUser.useMutation();
@@ -15,7 +16,7 @@ const SignupPage = () => {
         handleSubmit,
         formState: { isValid, errors },
     } = useForm<CelebritySignupType>({
-        resolver: zodResolver(celebritySignupSchema),
+        resolver: zodSchemaResolver(celebritySignupSchema),
         mode: 'onSubmit',
     });
 
@@ -24,7 +25,7 @@ const SignupPage = () => {
             return;
         }
         try {
-            await ceateUser.mutateAsync(data);
+            await ceateUser.mutateAsync(removeNullOrEmpty(data));
             Router.push(`/`);
         } catch (error) {
             console.log('error');
