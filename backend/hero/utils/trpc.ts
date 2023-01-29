@@ -1,7 +1,7 @@
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { ZodError } from 'zod';
+import { ZodError, infer } from 'zod';
 
 export const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
@@ -30,11 +30,21 @@ export const isAuthed = middleware(({ next, ctx }) => {
     }
     return next({
         ctx: {
-            user: ctx.req.headers.token,
+            user: {
+                username: 'janeasdf',
+            },
         },
     });
 });
 
+type InferMiddlwareContextType<T extends (value: (newValue: any) => any) => any> = T extends (
+    e: (e: { ctx: infer E }) => any
+) => any
+    ? E
+    : never;
+
 export const protectedProcedure = t.procedure.use(isAuthed);
 
 export type Context = inferAsyncReturnType<typeof createContext>;
+
+export type AuthContext = InferMiddlwareContextType<(typeof protectedProcedure)['query']>;

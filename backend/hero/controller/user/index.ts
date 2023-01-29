@@ -1,10 +1,10 @@
 import { CelebritySignupType, SigninType } from 'schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
-import { Context } from '../..';
 import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
+import { AuthContext, Context } from '../../utils/trpc';
 
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
@@ -173,4 +173,9 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             message: 'BAD REQUEST',
         });
     }
+};
+
+export const getCelebrityProfile = ({ ctx }: { ctx: AuthContext }) => {
+    const userName = ctx.user.username;
+    return [];
 };
