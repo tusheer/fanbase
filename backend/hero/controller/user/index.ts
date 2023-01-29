@@ -1,7 +1,7 @@
 import { CelebritySignupType, SigninType } from 'schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
-import { Context } from '../../server';
+import { Context } from '../..';
 import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';

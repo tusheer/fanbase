@@ -3,7 +3,7 @@ import prisma from '../../utils/prisma';
 import redisClient from '../../utils/connectRedis';
 import { CookieOptions } from 'express';
 import customConfig from '../../config/default';
-import { Context } from '../../server';
+import { Context } from '../..';
 import { signJwt } from '../../utils/jwt';
 import { TRPCError } from '@trpc/server';
 

@@ -1,16 +1,16 @@
 {
     "name": "hero",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "",
-    "main": "./server.ts",
+    "main": "index.ts",
     "scripts": {
         "build": "tsup",
         "build:ts": "tsup --env.NODE_ENV production",
         "copy:assets": "cpy 'src/generated/*.json' dist/generated",
         "dev": "npm run dev:watch",
-        "dev:watch": "tsx watch --clear-screen=false server.ts",
-        "start": "tsx server.ts",
-        "start:prod": "node dist/server.js",
+        "dev:watch": "tsx watch --clear-screen=false index.ts",
+        "start": "tsx index.ts",
+        "start:prod": "node dist/index.js",
         "typecheck": "tsc -b"
     },
     "author": "",
@@ -51,7 +51,7 @@
     },
     "tsup": {
         "entry": [
-            "server.ts"
+            "index.ts"
         ],
         "treeshake": true,
         "sourcemap": true,
