@@ -5,6 +5,7 @@ import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
 import { AuthContext, Context } from '../../utils/trpc';
+import redisClient from '../../utils/connectRedis';
 
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
@@ -107,7 +108,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
         if (!verifyPassword) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
-                message: 'BAD_REQUEST',
+                message: 'Password is not correct',
             });
         }
 
@@ -177,5 +178,6 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
 
 export const getCelebrityProfile = ({ ctx }: { ctx: AuthContext }) => {
     const userName = ctx.user.username;
-    return [];
+    const celebrityUser = redisClient.get(userName);
+    return celebrityUser;
 };

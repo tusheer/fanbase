@@ -1,7 +1,8 @@
 import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import * as trpcExpress from '@trpc/server/adapters/express';
-import { ZodError, infer } from 'zod';
+import { ZodError } from 'zod';
+import cookieParser from 'cookie-parser';
 
 export const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
@@ -25,7 +26,9 @@ export const publicProcedure = t.procedure;
 export const router = t.router;
 
 export const isAuthed = middleware(({ next, ctx }) => {
-    if (!ctx?.req.headers.token) {
+    const access_token = cookieParser;
+    console.log(ctx.req.headers.cookie);
+    if (!ctx?.req.headers.cookies) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
     return next({
