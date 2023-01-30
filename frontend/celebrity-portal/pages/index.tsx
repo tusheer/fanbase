@@ -1,26 +1,17 @@
-import { Button } from 'ui/components';
+import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
 import React from 'react';
-import Link from 'next/link';
 
 export default function Web() {
+    const { data, isLoading, isError } = trpc.user.getCelebrityProfile.useQuery(undefined);
+    if (isError) {
+        return <div>Error happen</div>;
+    }
     return (
         <>
-            <section className="py-40 max-w-7xl px-5 mx-auto  ">
-                <h1 className="text-transparent leading-tight  font-black text-6xl max-w-4xl mx-auto text-center  bg-clip-text bg-gradient-to-tr from-brand-main to-brand-600">
-                    Fanbase, Grow with your amazing network
-                </h1>
-                <p className="max-w-4xl mx-auto text-center font-medium text-lg mt-8 text-gray-700">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti ullam ut deleniti, perferendis
-                    impedit voluptas exercitationem aperiam minima. fugiat dolorum cumque ullam? A dolore placeat id,
-                    quibusdam dolores nulla.
-                </p>
-                <div className="flex justify-center mt-8">
-                    <Link href={'/signup'}>
-                        <Button>Singup</Button>
-                    </Link>
-                </div>
-            </section>
+            {isLoading ? <div>...Loading</div> : null}
+
+            <section className="py-40 max-w-7xl px-5 mx-auto">{JSON.stringify(data)}</section>
         </>
     );
 }

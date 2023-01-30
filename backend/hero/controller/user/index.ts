@@ -1,10 +1,13 @@
 import { CelebritySignupType, SigninType } from 'schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
-import { Context } from '../../server';
 import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
+import { AuthContext, Context } from '../../utils/trpc';
+import redisClient from '../../utils/connectRedis';
+import { Celebrity } from 'database';
+// import redisClient from '../../utils/connectRedis';
 
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
@@ -107,7 +110,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
         if (!verifyPassword) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
-                message: 'BAD_REQUEST',
+                message: 'Password is not correct',
             });
         }
 
@@ -173,4 +176,12 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             message: 'BAD REQUEST',
         });
     }
+};
+
+//TODO : Add a expires in session management
+//TODO :
+export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
+    const userName = ctx.user.username;
+    const celebrityUser = await redisClient.get(userName);
+    return celebrityUser;
 };

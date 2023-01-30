@@ -8,7 +8,6 @@ export const signJwt = (
     options: SignOptions = {}
 ) => {
     const privateKey = Buffer.from(customConfig[key], 'base64').toString('ascii');
-
     try {
         const token = jwt.sign(payload, privateKey, {
             ...(options ? options : {}),
@@ -24,12 +23,18 @@ export const signJwt = (
     }
 };
 
-export const verifyJwt = <T>(token: string, key: 'accessTokenPublicKey' | 'refreshTokenPublicKey'): T | null => {
-    const publicKey = Buffer.from(customConfig[key], 'base64').toString('ascii');
+export const verifyJwt = <T>(token: string, key: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey'): T | null => {
+    const privateKey = Buffer.from(customConfig[key], 'base64').toString('ascii');
+
     try {
-        return jwt.verify(token, publicKey) as T;
+        const decoded = jwt.verify(token, privateKey) as T;
+        console.log({ decoded });
+        return decoded;
     } catch (error) {
-        console.log(error);
-        return null;
+        throw new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'JWT Isssue',
+            cause: error,
+        });
     }
 };
