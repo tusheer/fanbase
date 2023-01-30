@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
 import { AuthContext, Context } from '../../utils/trpc';
-import redisClient from '../../utils/connectRedis';
+// import redisClient from '../../utils/connectRedis';
 
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
@@ -176,8 +176,10 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
     }
 };
 
-export const getCelebrityProfile = ({ ctx }: { ctx: AuthContext }) => {
-    const userName = ctx.user.username;
-    const celebrityUser = redisClient.get(userName);
-    return celebrityUser;
+export const getCelebrityProfileController = ({ ctx }: { ctx: AuthContext }) => {
+    const userName = ctx.user;
+    console.log(userName);
+
+    // const celebrityUser = redisClient.get(userName);
+    return userName;
 };

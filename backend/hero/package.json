@@ -16,7 +16,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@trpc/server": "^10.8.1",
+        "@trpc/server": "10.9.0",
         "argon2": "^0.30.3",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",
@@ -29,7 +29,7 @@
         "nookies": "^2.5.2",
         "redis": "^4.5.1",
         "schema": "*",
-        "superjson": "^1.12.1",
+        "superjson": "^1.12.2",
         "zod": "^3.20.2"
     },
     "devDependencies": {

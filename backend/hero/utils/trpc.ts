@@ -2,7 +2,7 @@ import { TRPCError, inferAsyncReturnType, initTRPC } from '@trpc/server';
 import superjson from 'superjson';
 import * as trpcExpress from '@trpc/server/adapters/express';
 import { ZodError } from 'zod';
-import cookieParser from 'cookie-parser';
+import { verifyJwt } from './jwt';
 
 export const createContext = ({ req, res }: trpcExpress.CreateExpressContextOptions) => ({ req, res });
 
@@ -26,18 +26,30 @@ export const publicProcedure = t.procedure;
 export const router = t.router;
 
 export const isAuthed = middleware(({ next, ctx }) => {
-    const access_token = cookieParser;
-    console.log(ctx.req.headers.cookie);
-    if (!ctx?.req.headers.cookies) {
+    try {
+        const access_token = ctx.req.cookies.access_token;
+        const device_uid = ctx.req.cookies.device_uid;
+        const refresh_token = ctx.req.cookies.refresh_token;
+        const logged_in = ctx.req.cookies.logged_in;
+
+        if (!access_token && !device_uid && !refresh_token && !logged_in) {
+            throw new TRPCError({ code: 'UNAUTHORIZED' });
+        }
+
+        const decodedUser = verifyJwt(access_token, 'accessTokenPrivateKey');
+
+        if (!decodedUser) {
+            throw new TRPCError({ code: 'UNAUTHORIZED' });
+        }
+
+        return next({
+            ctx: {
+                user: decodedUser,
+            },
+        });
+    } catch (error) {
         throw new TRPCError({ code: 'UNAUTHORIZED' });
     }
-    return next({
-        ctx: {
-            user: {
-                username: 'janeasdf',
-            },
-        },
-    });
 });
 
 type InferMiddlwareContextType<T extends (value: (newValue: any) => any) => any> = T extends (
