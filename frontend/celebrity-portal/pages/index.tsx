@@ -3,13 +3,14 @@ import BaseLayout from '../src/layouts/BaseLayout';
 import React from 'react';
 
 export default function Web() {
-    const { data, isLoading, isError, error } = trpc.user.getCelebrityProfile.useQuery(undefined);
+    const { data, isLoading, isError } = trpc.user.getCelebrityProfile.useQuery(undefined);
     if (isError) {
-        return JSON.stringify(error);
+        return <div>Error happen</div>;
     }
     return (
         <>
-            {isLoading ? <div>...Loadingg</div> : null}
+            {isLoading ? <div>...Loading</div> : null}
+
             <section className="py-40 max-w-7xl px-5 mx-auto">{JSON.stringify(data)}</section>
         </>
     );

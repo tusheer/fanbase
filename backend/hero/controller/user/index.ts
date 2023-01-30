@@ -5,6 +5,8 @@ import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
 import { AuthContext, Context } from '../../utils/trpc';
+import redisClient from '../../utils/connectRedis';
+import { Celebrity } from 'database';
 // import redisClient from '../../utils/connectRedis';
 
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
@@ -176,10 +178,10 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
     }
 };
 
-export const getCelebrityProfileController = ({ ctx }: { ctx: AuthContext }) => {
-    const userName = ctx.user;
-    console.log(userName);
-
-    // const celebrityUser = redisClient.get(userName);
-    return userName;
+//TODO : Add a expires in session management
+//TODO :
+export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
+    const userName = ctx.user.username;
+    const celebrityUser = await redisClient.get(userName);
+    return celebrityUser;
 };

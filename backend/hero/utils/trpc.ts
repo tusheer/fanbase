@@ -36,7 +36,13 @@ export const isAuthed = middleware(({ next, ctx }) => {
             throw new TRPCError({ code: 'UNAUTHORIZED' });
         }
 
-        const decodedUser = verifyJwt(access_token, 'accessTokenPrivateKey');
+        const decodedUser = verifyJwt(access_token, 'accessTokenPrivateKey') as {
+            email: string;
+            id: string;
+            iat: number;
+            exp: number;
+            username: string;
+        } | null;
 
         if (!decodedUser) {
             throw new TRPCError({ code: 'UNAUTHORIZED' });

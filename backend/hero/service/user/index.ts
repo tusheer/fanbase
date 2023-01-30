@@ -105,11 +105,11 @@ export const signTokens = (user: { email: string; id: string; username: string |
     try {
         // 2. Create Access and Refresh tokens
         const access_token = signJwt(user, 'accessTokenPrivateKey', {
-            expiresIn: `${customConfig.accessTokenExpiresIn}m`,
+            expiresIn: `${customConfig.accessTokenExpiresIn}d`,
         });
 
         const refresh_token = signJwt(user, 'refreshTokenPrivateKey', {
-            expiresIn: `${customConfig.refreshTokenExpiresIn}m`,
+            expiresIn: `${customConfig.refreshTokenExpiresIn}d`,
         });
 
         return { access_token, refresh_token };
