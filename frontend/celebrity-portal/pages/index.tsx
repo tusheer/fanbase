@@ -4,6 +4,7 @@ import React from 'react';
 
 export default function Web() {
     const { data, isLoading, isError } = trpc.user.getCelebrityProfile.useQuery();
+
     if (isError) {
         return <div>Error happen</div>;
     }
