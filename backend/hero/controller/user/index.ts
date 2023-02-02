@@ -182,5 +182,6 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
 export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
     const userName = ctx.user.username;
     const celebrityUser = await redisClient.get(userName);
+
     return celebrityUser;
 };

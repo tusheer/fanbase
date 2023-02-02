@@ -11,7 +11,6 @@ export default function Web() {
     return (
         <>
             {isLoading ? <div>...Loading</div> : null}
-
             <section className="py-40 max-w-7xl px-5 mx-auto">{JSON.stringify(data)}</section>
         </>
     );

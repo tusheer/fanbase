@@ -28,7 +28,6 @@ export const verifyJwt = <T>(token: string, key: 'accessTokenPrivateKey' | 'refr
 
     try {
         const decoded = jwt.verify(token, privateKey) as T;
-        console.log({ decoded });
         return decoded;
     } catch (error) {
         throw new TRPCError({

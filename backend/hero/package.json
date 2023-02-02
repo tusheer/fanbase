@@ -2,6 +2,9 @@
     "name": "hero",
     "version": "1.0.1",
     "description": "",
+    "publishConfig": {
+        "access": "public"
+    },
     "main": "index.ts",
     "scripts": {
         "build": "tsup",
