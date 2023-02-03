@@ -5,6 +5,8 @@ import type { AppRouter } from 'hero';
 import { loggerLink } from '@trpc/client/links/loggerLink';
 import SuperJSON from 'superjson';
 
+let resolving = false;
+
 const trpc = createTRPCNext<AppRouter>({
     config() {
         return {
@@ -21,19 +23,56 @@ const trpc = createTRPCNext<AppRouter>({
                      * @link https://trpc.io/docs/ssr
                      **/
                     url: 'http://localhost:8000/api/trpc',
-                    fetch(url, options) {
-                        return fetch(url, {
-                            ...options,
-                            credentials: 'include',
-                        });
+                    fetch: async (url, options) => {
+                        while (resolving) {
+                            continue;
+                        }
+
+                        const res = await fetch(url, { ...options, credentials: 'include' });
+
+                        // in this case all the batched requests have the same code, the the whole batch can be handled
+                        if (res.status === 401) {
+                            resolving = true;
+                            return await handleTrpcUnauthError(res, url as URL, options);
+                        }
+
+                        // if nothing happens, carry on with the procedure
+                        return res;
                     },
                 }),
             ],
             transformer: SuperJSON,
-            queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+            queryClientConfig: {
+                defaultOptions: {
+                    queries: { staleTime: 10 * (60 * 1000), cacheTime: 15 * (60 * 1000), retryDelay: 1 * (60 * 1000) },
+                },
+            },
             ssr: false,
         };
     },
 });
+
+export function handleTrpcUnauthError(error: Response, url: URL, options: any) {
+    return new Promise((resolve, reject) => {
+        fetch('http://localhost:8000/api/auth/refresh-token', {
+            credentials: 'include',
+        }).then((data) => {
+            if (data.status === 401) {
+                reject();
+            } else {
+                resolve(data);
+            }
+        });
+    })
+        .then(() => {
+            resolving = false;
+            return fetch(url, { ...options, credentials: 'include' });
+        })
+        .catch(() => {
+            resolving = false;
+            location.replace('/signin');
+            return fetch(url, { ...options, credentials: 'include' });
+        });
+}
 
 export default trpc;

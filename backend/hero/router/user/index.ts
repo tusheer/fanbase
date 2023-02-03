@@ -7,7 +7,6 @@ import {
     logoutCelebrityUserController,
     singinCelebrityUser,
 } from '../../controller/user';
-import { never } from 'zod';
 
 const userRoute = router({
     createCelebrityUser: publicProcedure.input(celebritySignupSchema).mutation(createCelebrityUserController),

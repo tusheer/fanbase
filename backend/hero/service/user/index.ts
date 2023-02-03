@@ -15,12 +15,12 @@ const cookieOptions: CookieOptions = {
 
 const accessTokenCookieOptions = {
     ...cookieOptions,
-    expires: new Date(Date.now() + customConfig.accessTokenExpiresIn * 24 * 3600000),
+    expires: new Date(Date.now() + 60 * 24 * 3600000),
 };
 
 const refreshTokenCookieOptions = {
     ...cookieOptions,
-    expires: new Date(Date.now() + customConfig.refreshTokenExpiresIn * 24 * 3600000),
+    expires: new Date(Date.now() + 60 * 24 * 3600000),
 };
 
 const createCelebrityUser = async (createArg: Prisma.CelebrityCreateArgs) => {

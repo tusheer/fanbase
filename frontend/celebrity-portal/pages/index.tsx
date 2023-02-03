@@ -19,14 +19,14 @@ export default function Web() {
 }
 
 export const getServerSideProps = withSession((ctx, user) => {
-    if (user) {
-        return {
-            props: {
-                user,
-            },
-        };
-    }
-    return { redirect: { destination: '/signin', permanent: true } };
+    // if (user) {
+    return {
+        props: {
+            user,
+        },
+    };
+    // }
+    // return { redirect: { destination: '/signin', permanent: true } };
 });
 
 Web.getLayout = (page: React.ReactNode, pageProps: { user: DecodedUser | null }) => {

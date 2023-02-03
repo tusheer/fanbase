@@ -1,13 +1,109 @@
 import { Request, Response } from 'express';
+import { verifyJwt } from '../../utils/jwt';
+import useragent from 'express-useragent';
+import userServices from '../../service/user';
 
-export const getRefreshToken = async (res: Response, req: Request) => {
-    const refresh_token = req.headers.refresh_token;
-    const access_token = req.headers.access_token;
-    const device_uid = req.headers.device_uid;
+export type DecodedUser = {
+    email: string;
+    id: string;
+    username: string;
+    iat: number;
+    exp: number;
+};
 
-    return res.status(200).send({
-        access_token,
-        refresh_token,
-        device_uid,
-    });
+export const getRefreshToken = async (req: Request, res: Response) => {
+    try {
+        const refreshToken = req.cookies.refresh_token as string;
+        const accessToken = req.cookies.access_token;
+        const device_uid = req.cookies.device_uid as string;
+        const deviceInfo = useragent.parse(req.headers['user-agent'] as string);
+
+        const refreshTokenDecoded = verifyJwt(refreshToken, 'refreshTokenPrivateKey') as DecodedUser;
+
+        if (!refreshTokenDecoded || !accessToken) {
+            return res.status(401).send({
+                message: 'UNAUTHORIZED',
+            });
+        }
+
+        const celebrityUser = await userServices.findCelebrityUser({
+            where: {
+                email: refreshTokenDecoded.email,
+            },
+            select: {
+                email: true,
+                id: true,
+                username: true,
+                session: true,
+            },
+        });
+
+        if (!celebrityUser) {
+            res.statusCode = 401;
+            return res.send({
+                message: 'UNAUTHORIZED',
+            });
+        }
+        const findSessionInUser = celebrityUser.session.find((session) => session.id === device_uid);
+
+        if (findSessionInUser) {
+            await userServices.deleteUserSession({
+                where: {
+                    id: device_uid,
+                },
+                include: {
+                    Celebrity: true,
+                },
+            });
+
+            userServices.deleteUserSessionInRedis(celebrityUser.username, device_uid);
+
+            userServices.removeUserCookies({ req, res });
+        }
+
+        // Create the Access and refresh Tokens
+        const { access_token, refresh_token } = userServices.signTokens({
+            email: celebrityUser.email,
+            id: celebrityUser.id,
+            username: celebrityUser.username,
+        });
+
+        //Create sesstion for user agent
+        const session = await userServices.createUserSession({
+            data: {
+                refreshToken: refresh_token,
+                userAgent: JSON.stringify(deviceInfo),
+                celebrityId: celebrityUser.id,
+            },
+        });
+
+        //remove previous session and add new
+        const sessionIndex = celebrityUser.session.findIndex((data) => data.id === device_uid);
+        celebrityUser.session.splice(sessionIndex, 1, session);
+
+        userServices.setUserInRedis({
+            ...celebrityUser,
+        });
+
+        //  Send Access Token in Cookie
+        userServices.setUserCookies(
+            { req, res },
+            {
+                access_token,
+                refresh_token,
+                session_uid: session.id,
+            }
+        );
+
+        return res.status(200).send({
+            email: celebrityUser.email,
+            id: celebrityUser.id,
+            username: celebrityUser.username,
+        });
+    } catch (error) {
+        res.statusCode = 401;
+        return res.send({
+            message: 'UNAUTHORIZED',
+        });
+    }
 };
