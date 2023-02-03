@@ -19,7 +19,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@trpc/server": "10.9.0",
+        "@trpc/server": "10.9.1",
         "argon2": "^0.30.3",
         "cookie-parser": "^1.4.6",
         "cors": "^2.8.5",

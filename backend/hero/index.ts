@@ -8,6 +8,7 @@ import { router, Context, createContext } from './utils/trpc';
 import userRoute from './router/user';
 import cookieParser from 'cookie-parser';
 import redisClient, { connectRedis } from './utils/connectRedis';
+import authRouter from './router/auth';
 
 //TODO : Add lodash in packages
 
@@ -35,6 +36,7 @@ app.use(
         createContext,
     })
 );
+app.use('/api/auth', authRouter);
 
 const port = customConfig.port;
 app.listen(port, () => {

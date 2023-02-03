@@ -24,7 +24,9 @@ const Navbar = () => {
                     </b>
                 </Link>
                 {user ? (
-                    <Button onClick={() => logoutUser.mutate()}>Logout</Button>
+                    <Button rounded onClick={() => logoutUser.mutate()}>
+                        Logout
+                    </Button>
                 ) : (
                     <div className="flex gap-9  items-center">
                         <Link

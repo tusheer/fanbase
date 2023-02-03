@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 
-export const verifyAuthorizationController = async (res: Response, req: Request) => {
+export const getRefreshToken = async (res: Response, req: Request) => {
     const refresh_token = req.headers.refresh_token;
     const access_token = req.headers.access_token;
     const device_uid = req.headers.device_uid;
