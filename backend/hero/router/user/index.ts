@@ -4,13 +4,16 @@ import { router, publicProcedure, protectedProcedure } from '../../utils/trpc';
 import {
     createCelebrityUserController,
     getCelebrityProfileController,
+    logoutCelebrityUserController,
     singinCelebrityUser,
 } from '../../controller/user';
+import { never } from 'zod';
 
 const userRoute = router({
     createCelebrityUser: publicProcedure.input(celebritySignupSchema).mutation(createCelebrityUserController),
     signinCelebrityUser: publicProcedure.input(signinSchema).mutation(singinCelebrityUser),
     getCelebrityProfile: protectedProcedure.query(getCelebrityProfileController),
+    logoutCelebrityUser: protectedProcedure.mutation(logoutCelebrityUserController),
 });
 
 export default userRoute;

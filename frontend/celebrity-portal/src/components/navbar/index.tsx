@@ -2,9 +2,18 @@ import Link from 'next/link';
 import React from 'react';
 import { Button } from 'ui/components';
 import useUserStore from '../../store/user';
+import trpc from '../../config/trpc';
+import Router from 'next/router';
 
 const Navbar = () => {
     const { user, removeUser } = useUserStore();
+
+    const logoutUser = trpc.user.logoutCelebrityUser.useMutation({
+        onSuccess: () => {
+            removeUser();
+            Router.push('/signin');
+        },
+    });
 
     return (
         <nav className="h-20 bg-white border-b ">
@@ -15,7 +24,7 @@ const Navbar = () => {
                     </b>
                 </Link>
                 {user ? (
-                    <Button onClick={removeUser}>Logout</Button>
+                    <Button onClick={() => logoutUser.mutate()}>Logout</Button>
                 ) : (
                     <div className="flex gap-9  items-center">
                         <Link

@@ -178,6 +178,35 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
     }
 };
 
+export const logoutCelebrityUserController = async ({ ctx }: { ctx: AuthContext }) => {
+    try {
+        const device_uid = ctx.req.cookies.device_uid;
+
+        await userServices.deleteUserSession({
+            where: {
+                id: device_uid,
+            },
+            select: {
+                Celebrity: true,
+            },
+        });
+
+        await userServices.deleteUserSessionInRedis(ctx.user.username, device_uid);
+
+        userServices.removeUserCookies(ctx);
+
+        return {
+            message: 'Logout successfully',
+        };
+    } catch (error) {
+        throw new TRPCError({
+            cause: error,
+            code: 'BAD_REQUEST',
+            message: 'BAD REQUEST',
+        });
+    }
+};
+
 //TODO : Add a expires in session management
 //TODO :
 export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
