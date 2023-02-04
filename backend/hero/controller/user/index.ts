@@ -209,7 +209,9 @@ export const logoutCelebrityUserController = async ({ ctx }: { ctx: AuthContext 
 };
 
 //TODO : Add a expires in session management
-//TODO :
+//TODO : If no profile get from session then search data in database
+//TODO : Add type in router
+
 export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
     const userName = ctx.user.username;
     const celebrityUser = await redisClient.get(userName);
