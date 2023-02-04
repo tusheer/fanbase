@@ -9,6 +9,7 @@ import userRoute from './router/user';
 import cookieParser from 'cookie-parser';
 import redisClient, { connectRedis } from './utils/connectRedis';
 import authRouter from './router/auth';
+import uploadRouter from './router/upload';
 
 //TODO : Add lodash in packages
 
@@ -37,6 +38,7 @@ app.use(
     })
 );
 app.use('/api/auth', authRouter);
+app.use('/api/upload', uploadRouter);
 
 const port = customConfig.port;
 app.listen(port, () => {
