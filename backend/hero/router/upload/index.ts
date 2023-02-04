@@ -1,8 +1,8 @@
 import express from 'express';
-import uploader from '../../utils/upload';
 import { singleImageUploadController } from '../../controller/upload';
-import errorHandler from '../../middleware/errorHandler';
 import authMiddleware from '../../middleware/authExpressMiddleware';
+import errorHandler from '../../middleware/errorHandler';
+import uploader from '../../utils/upload';
 
 const uploadRouter = express();
 

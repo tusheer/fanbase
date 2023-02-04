@@ -1,12 +1,12 @@
-import React, { ReactNode } from 'react';
-import { CelebritySignupType, celebritySignupSchema } from 'schema';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import Router from 'next/router';
+import { ReactNode } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { celebritySignupSchema, CelebritySignupType } from 'schema';
 import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
-import Router from 'next/router';
-import zodSchemaResolver from '../src/utils/zodSchemaParse';
 import removeNullOrEmpty from '../src/utils/removeNullOrEmpty';
+import zodSchemaResolver from '../src/utils/zodSchemaParse';
 
 const SignupPage = () => {
     const ceateUser = trpc.user.createCelebrityUser.useMutation();
@@ -33,17 +33,17 @@ const SignupPage = () => {
     };
 
     return (
-        <div className="pt-20 px-5">
-            <div className="max-w-3xl text-center px-10 mx-auto">
-                <h1 className="text-3xl mb-5 text-gray-800 font-semibold text-transparent  bg-clip-text bg-gradient-to-tr from-brand-main to-brand-600">
+        <div className="px-5 pt-20">
+            <div className="mx-auto max-w-3xl px-10 text-center">
+                <h1 className="from-brand-main to-brand-600 mb-5 bg-gradient-to-tr bg-clip-text  text-3xl font-semibold text-gray-800 text-transparent">
                     Signup celebrity account
                 </h1>
-                <p className="mb-8 max-w-xl text-center mx-auto text-gray-700">
+                <p className="mx-auto mb-8 max-w-xl text-center text-gray-700">
                     Orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                 </p>
             </div>
 
-            <div className="max-w-2xl block py-8 px-7 bg-white border rounded-md mx-auto">
+            <div className="mx-auto block max-w-2xl rounded-md border bg-white py-8 px-7">
                 <form onSubmit={handleSubmit(handleOnSubmit)}>
                     <div className="mb-4 flex gap-5">
                         <TextInput

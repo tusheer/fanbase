@@ -1,7 +1,7 @@
-import { Request, Response } from 'express';
-import { verifyJwt } from '../../utils/jwt';
+import { RequestHandler } from 'express';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
+import { verifyJwt } from '../../utils/jwt';
 
 export type DecodedUser = {
     email: string;
@@ -11,7 +11,7 @@ export type DecodedUser = {
     exp: number;
 };
 
-export const getRefreshToken = async (req: Request, res: Response) => {
+export const getRefreshToken: RequestHandler = async (req, res) => {
     try {
         const refreshToken = req.cookies.refresh_token as string;
         const accessToken = req.cookies.access_token;

@@ -1,12 +1,12 @@
-import { CelebritySignupType, SigninType } from 'schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
-import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
-import userServices from '../../service/user';
-import { Context } from '../../utils/trpc';
+import { nanoid } from 'nanoid';
+import { CelebritySignupType, SigninType } from 'schema';
 import { AuthContext } from '../../middleware/protectedTrpcProdedure';
+import userServices from '../../service/user';
 import redisClient from '../../utils/connectRedis';
+import { Context } from '../../utils/trpc';
 
 // import redisClient from '../../utils/connectRedis';
 

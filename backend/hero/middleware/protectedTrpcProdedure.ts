@@ -1,6 +1,6 @@
 import { TRPCError } from '@trpc/server';
-import { InferMiddlwareContextType, trpc } from '../utils/trpc';
 import { verifyJwt } from '../utils/jwt';
+import { InferMiddlwareContextType, trpc } from '../utils/trpc';
 
 const middleware = trpc.middleware;
 

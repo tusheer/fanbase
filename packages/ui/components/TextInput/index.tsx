@@ -1,6 +1,6 @@
-import React, { InputHTMLAttributes, forwardRef, useId } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
 import { cva } from 'class-variance-authority';
+import { AnimatePresence, motion } from 'framer-motion';
+import React, { forwardRef, InputHTMLAttributes, useId } from 'react';
 
 interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
     className?: string;
@@ -36,7 +36,7 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
                 {label ? (
                     <label
                         htmlFor={uid + name}
-                        className="block mb-1.5 text-sm font-medium text-gray-900  dark:text-white"
+                        className="mb-1.5 block text-sm font-medium text-gray-900  dark:text-white"
                     >
                         {label}
                     </label>
@@ -61,7 +61,7 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
                             initial={{ opacity: 0, y: 4 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: 4 }}
-                            className="text-red-600 text-sm block"
+                            className="block text-sm text-red-600"
                             role="alert"
                         >
                             {errorText}

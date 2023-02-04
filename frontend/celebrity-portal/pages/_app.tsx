@@ -1,12 +1,12 @@
-import { ReactElement, ReactNode } from 'react';
-import type { AppProps } from 'next/app';
-import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
-import trpc from '../src/config/trpc';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Inter } from '@next/font/google';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { AppRouter } from 'hero';
-import '../styles/tailwind.css';
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
+import type { AppProps } from 'next/app';
+import { ReactElement, ReactNode } from 'react';
+import trpc from '../src/config/trpc';
 import { verifyJwt } from '../src/utils/jwt';
+import '../styles/tailwind.css';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement, pageProps: AppProps) => ReactNode;

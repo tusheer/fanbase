@@ -1,6 +1,6 @@
+import { TRPCError } from '@trpc/server';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import customConfig from '../config/default';
-import { TRPCError } from '@trpc/server';
 
 export const signJwt = (
     payload: { [key: string]: string | null },

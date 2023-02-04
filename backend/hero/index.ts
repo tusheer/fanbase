@@ -1,15 +1,15 @@
+import * as trpcExpress from '@trpc/server/adapters/express';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import express from 'express';
 import morgan from 'morgan';
-import cors from 'cors';
-import * as trpcExpress from '@trpc/server/adapters/express';
 import customConfig from './config/default';
-import { connectDB } from './utils/prisma';
-import { router, Context, createContext } from './utils/trpc';
-import userRoute from './router/user';
-import cookieParser from 'cookie-parser';
-import redisClient, { connectRedis } from './utils/connectRedis';
 import authRouter from './router/auth';
 import uploadRouter from './router/upload';
+import userRoute from './router/user';
+import redisClient, { connectRedis } from './utils/connectRedis';
+import { connectDB } from './utils/prisma';
+import { Context, createContext, router } from './utils/trpc';
 
 //TODO : Add lodash in packages
 

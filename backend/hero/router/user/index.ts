@@ -1,6 +1,6 @@
 import { celebritySignupSchema, signinSchema } from 'schema';
-import { router, publicProcedure } from '../../utils/trpc';
 import protectedProcedure from '../../middleware/protectedTrpcProdedure';
+import { publicProcedure, router } from '../../utils/trpc';
 
 import {
     createCelebrityUserController,

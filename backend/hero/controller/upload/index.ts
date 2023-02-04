@@ -1,10 +1,8 @@
-import { Request, Response } from 'express';
-import sharp from 'sharp';
+import { RequestHandler } from 'express';
 import { nanoid } from 'nanoid';
-import fs from 'fs';
-import path from 'path';
+import sharp from 'sharp';
 
-export const singleImageUploadController = async (req: Request, res: Response) => {
+export const singleImageUploadController: RequestHandler = async (req, res) => {
     const file = req.file;
     if (!file) {
         return res.status(400).send({
