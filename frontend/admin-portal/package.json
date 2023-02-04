@@ -10,13 +10,13 @@
     },
     "dependencies": {
         "@next/font": "13.1.6",
-        "@tanstack/react-query": "^4.24.0",
-        "@tanstack/react-query-devtools": "^4.24.0",
-        "@trpc/client": "10.9.1",
-        "@trpc/next": "^10.9.1",
-        "@trpc/react-query": "^10.9.1",
-        "@trpc/server": "10.9.1",
-        "eslint": "8.31.0",
+        "@tanstack/react-query": "^4.24.4",
+        "@tanstack/react-query-devtools": "^4.24.4",
+        "@trpc/client": "10.10.0",
+        "@trpc/next": "^10.10.0",
+        "@trpc/react-query": "^10.10.0",
+        "@trpc/server": "10.10.0",
+        "eslint": "8.33.0",
         "next": "13.1.6",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
@@ -29,6 +29,6 @@
         "@types/react-dom": "^18.0.10",
         "eslint-config-custom-react": "*",
         "tsconfig": "*",
-        "typescript": "4.9.4"
+        "typescript": "4.9.5"
     }
 }
