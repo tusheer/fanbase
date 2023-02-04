@@ -4,7 +4,8 @@ import argon2 from 'argon2';
 import { nanoid } from 'nanoid';
 import useragent from 'express-useragent';
 import userServices from '../../service/user';
-import { AuthContext, Context } from '../../utils/trpc';
+import { Context } from '../../utils/trpc';
+import { AuthContext } from '../../middleware/protectedTrpcProdedure';
 import redisClient from '../../utils/connectRedis';
 
 // import redisClient from '../../utils/connectRedis';

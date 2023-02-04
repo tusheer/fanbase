@@ -40,9 +40,7 @@ export const getRefreshToken = async (req: Request, res: Response) => {
 
         if (!celebrityUser) {
             res.statusCode = 401;
-            return res.send({
-                message: 'UNAUTHORIZED',
-            });
+            return new Error('User is not registred');
         }
         const findSessionInUser = celebrityUser.session.find((session) => session.id === device_uid);
 
@@ -101,9 +99,6 @@ export const getRefreshToken = async (req: Request, res: Response) => {
             username: celebrityUser.username,
         });
     } catch (error) {
-        res.statusCode = 401;
-        return res.send({
-            message: 'UNAUTHORIZED',
-        });
+        return new Error('UNAUTHENTICATED');
     }
 };
