@@ -30,7 +30,6 @@ const inputCva = cva(
 export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
     ({ type = 'text', textArea, errorText, label, className = '', rows = 2, error, name = '', ...rest }, ref) => {
         const uid = useId();
-
         return (
             <div className={className}>
                 {label ? (

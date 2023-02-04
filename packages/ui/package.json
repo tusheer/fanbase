@@ -5,18 +5,36 @@
         "access": "public"
     },
     "files": [
-        "components"
+        "components",
+        "icons"
     ],
     "license": "MIT",
     "scripts": {
-        "lint": "TIMING=1 eslint \"**/*.ts*\""
+        "lint": "TIMING=1 eslint \"**/*.ts*\"",
+        "storybook": "concurrently \"yarn:watch:*\"",
+        "build-storybook": "concurrently \"yarn:build:*\"",
+        "build:css": "npx tailwindcss -i ./public/tailwind.css -o ./public/build.css",
+        "build:storybook": "build-storybook build",
+        "watch:storybook": "start-storybook dev -p 6006"
     },
     "devDependencies": {
+        "@babel/core": "^7.20.12",
+        "@storybook/addon-actions": "^6.5.16",
+        "@storybook/addon-essentials": "^6.5.16",
+        "@storybook/addon-interactions": "^6.5.16",
+        "@storybook/addon-links": "^6.5.16",
+        "@storybook/builder-webpack5": "^6.5.16",
+        "@storybook/manager-webpack5": "^6.5.16",
+        "@storybook/react": "^6.5.16",
+        "@storybook/testing-library": "^0.0.13",
         "@types/node": "^18.11.18",
         "@types/react": "^18.0.27",
         "@types/react-dom": "^18.0.10",
+        "babel-loader": "^8.3.0",
+        "concurrently": "^7.6.0",
         "eslint": "^8.33.0",
         "eslint-config-custom-react": "*",
+        "eslint-plugin-storybook": "^0.6.10",
         "next": "^13.1.6",
         "react": "^18.2.0",
         "tsconfig": "*",

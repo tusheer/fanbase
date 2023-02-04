@@ -1,7 +1,7 @@
 import { cva, VariantProps } from 'class-variance-authority';
 import * as React from 'react';
 
-interface IButtonProps extends VariantProps<typeof buttonSyles>, React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IButtonProps extends VariantProps<typeof buttonSyles>, React.ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
     rounded?: boolean;
 }

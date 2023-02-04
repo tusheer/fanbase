@@ -2,34 +2,32 @@ import { RequestHandler } from 'express';
 import { nanoid } from 'nanoid';
 import sharp from 'sharp';
 
+const sizes = [
+    {
+        size: 'xsm',
+        quality: 5,
+    },
+    {
+        size: 'sm',
+        quality: 10,
+    },
+    {
+        size: 'md',
+        quality: 40,
+    },
+    {
+        size: 'lg',
+        quality: 60,
+    },
+];
+
 export const singleImageUploadController: RequestHandler = async (req, res) => {
     const file = req.file;
     if (!file) {
-        return res.status(400).send({
-            message: 'NOT_UPLOADED',
-        });
+        return new Error('File is required');
     }
 
-    const sizes = [
-        {
-            size: 'xsm',
-            quality: 5,
-        },
-        {
-            size: 'sm',
-            quality: 10,
-        },
-        {
-            size: 'md',
-            quality: 40,
-        },
-        {
-            size: 'lg',
-            quality: 60,
-        },
-    ];
-
-    const files: any[] = [];
+    const files: { url: string; size: string }[] = [];
 
     await Promise.all(
         sizes.map(async ({ quality, size }) => {

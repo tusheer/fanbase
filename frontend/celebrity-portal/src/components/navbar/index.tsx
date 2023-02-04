@@ -15,7 +15,7 @@ const Navbar = () => {
     });
 
     return (
-        <nav className="h-16 border-b border-b-gray-100 bg-white ">
+        <nav className="h-14 border-b border-b-gray-100 bg-white ">
             <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-5 ">
                 <Link href={'/'}>
                     <b className="from-brand-main to-brand-600  bg-gradient-to-tr bg-clip-text text-3xl text-transparent">
