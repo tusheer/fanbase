@@ -35,7 +35,9 @@ const Navbar = () => {
                             Signin
                         </Link>
                         <Link href={'/signup'}>
-                            <Button rounded>Signup</Button>
+                            <Button size="sm" rounded>
+                                Signup
+                            </Button>
                         </Link>
                     </div>
                 )}

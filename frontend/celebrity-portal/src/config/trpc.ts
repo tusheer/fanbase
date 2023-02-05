@@ -1,4 +1,4 @@
-import { httpBatchLink } from '@trpc/client';
+import { getFetch, httpBatchLink } from '@trpc/client';
 import { createTRPCNext } from '@trpc/next';
 import type { AppRouter } from 'hero';
 
@@ -27,13 +27,13 @@ const trpc = createTRPCNext<AppRouter>({
                         while (resolving) {
                             continue;
                         }
-
-                        const res = await fetch(url, { ...options, credentials: 'include' });
+                        const fetch = getFetch();
+                        const res = await fetch(url, { credentials: 'include', ...options });
 
                         // in this case all the batched requests have the same code, the the whole batch can be handled
                         if (res.status === 401) {
                             resolving = true;
-                            return await handleTrpcUnauthError(res, url as URL, options);
+                            return await handleTrpcUnauthError(url as URL, options);
                         }
 
                         // if nothing happens, carry on with the procedure
@@ -52,7 +52,8 @@ const trpc = createTRPCNext<AppRouter>({
     },
 });
 
-export function handleTrpcUnauthError(error: Response, url: URL, options: any) {
+export function handleTrpcUnauthError(url: URL, options: any) {
+    const trpcFetch = getFetch();
     return new Promise((resolve, reject) => {
         fetch('http://localhost:8000/api/auth/refresh-token', {
             credentials: 'include',
@@ -66,12 +67,12 @@ export function handleTrpcUnauthError(error: Response, url: URL, options: any) {
     })
         .then(() => {
             resolving = false;
-            return fetch(url, { ...options, credentials: 'include' });
+            return trpcFetch(url, { ...options, credentials: 'include' });
         })
         .catch(() => {
             resolving = false;
             location.replace('/signin');
-            return fetch(url, { ...options, credentials: 'include' });
+            return trpcFetch(url, { ...options, credentials: 'include' });
         });
 }
 

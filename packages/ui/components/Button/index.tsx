@@ -10,7 +10,7 @@ const buttonSyles = cva('text-white font-medium ', {
     variants: {
         size: {
             md: 'h-10 px-7',
-            sm: 'h-8 px-6',
+            sm: 'h-9 px-6',
         },
         rounded: {
             true: 'rounded-full',
