@@ -18,42 +18,54 @@ model Admin {
   updateAt  DateTime @updatedAt
 }
 
-model Celebrity {
-  id            String       @id @default(cuid())
-  email         String       @unique
-  username      String       @unique
-  firstName     String?
-  lastName      String?
-  phone         String?
-  password      String       @db.Text
-  createdAt     DateTime     @default(now())
-  updateAt      DateTime     @updatedAt
-  country       String?
-  shop          Shop[]
-  Product       Product[]
-  profileImage  String?
-  coverImage    String?
-  socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  topFan        PublicUser[]
-  socialMediaId String?
-  session       Session[]
+model User {
+  id             String         @id @default(cuid())
+  email          String         @unique
+  username       String         @unique
+  firstName      String?
+  lastName       String?
+  phone          String?
+  password       String         @db.Text
+  createdAt      DateTime       @default(now())
+  updateAt       DateTime       @updatedAt
+  country        String?
+  shop           Shop[]
+  Product        Product[]
+  ProfilePicture ProfilePicture @relation(fields: [id], references: [userId])
+  coverImage     String?
+  userType       UserType       @default(PUBLIC_FIGURE)
+  // socialMedia    SocialMedia?   @relation(name: "social_media", fields: [id], references: [userId])
+  topFan         PublicUser[]
+  socialMediaId  String?
+  session        Session[]
+}
+
+model ProfilePicture {
+  userId   String @unique
+  sm       String
+  xsm      String
+  md       String
+  lg       String
+  blurHash String
+  User     User?
+
+  @@id([userId])
 }
 
 model PublicUser {
-  id            String       @id @default(cuid())
-  email         String       @unique
-  username      String?      @unique
-  firstName     String?
-  lastName      String?
-  phone         Int?
-  password      String       @db.Text
-  createdAt     DateTime     @default(now())
-  updateAt      DateTime     @updatedAt
-  country       String?
-  socialMedia   SocialMedia? @relation(fields: [socialMediaId], references: [id])
-  socialMediaId String?
-  fan           Celebrity[]
-  session       Session[]
+  id          String       @id @default(cuid())
+  email       String       @unique
+  username    String?      @unique
+  firstName   String?
+  lastName    String?
+  phone       Int?
+  password    String       @db.Text
+  createdAt   DateTime     @default(now())
+  updateAt    DateTime     @updatedAt
+  country     String?
+  fan         User[]
+  session     Session[]
+  SocialMedia SocialMedia? @relation(fields: [id], references: [userId])
 }
 
 model Product {
@@ -62,20 +74,20 @@ model Product {
   description String?
   createdAt   DateTime       @default(now())
   updatedAt   DateTime       @updatedAt
-  Celebrity   Celebrity?     @relation(fields: [celebrityId], references: [id])
-  celebrityId String?
+  User        User?          @relation(fields: [UserId], references: [id])
+  UserId      String?
   Shop        Shop?          @relation(fields: [shopId], references: [id])
   shopId      String?
   type        String
 }
 
 model Shop {
-  id          String     @id @default(cuid())
-  name        String
-  products    Product[]
-  Celebrity   Celebrity? @relation(fields: [celebrityId], references: [id])
-  celebrityId String?
-  type        String
+  id       String    @id @default(cuid())
+  name     String
+  products Product[]
+  User     User?     @relation(fields: [UserId], references: [id])
+  UserId   String?
+  type     String
 }
 
 model ProductImage {
@@ -92,21 +104,28 @@ model ProductImage {
 }
 
 model SocialMedia {
-  id         String       @id
-  facebook   String?      @unique
-  youtube    String?      @unique
-  tiktok     String?      @unique
-  instragram String?      @unique
-  Celebrity  Celebrity[]
-  PublicUser PublicUser[]
+  userId     String      @unique
+  facebook   String?     @unique
+  youtube    String?     @unique
+  tiktok     String?     @unique
+  instragram String?     @unique
+  PublicUser PublicUser?
+
+  @@id([userId])
 }
 
 model Session {
   id           String      @id @default(cuid())
   userAgent    Json
   refreshToken String      @unique
-  Celebrity    Celebrity?  @relation(fields: [celebrityId], references: [id])
-  celebrityId  String?
-  PublicUser   PublicUser? @relation(fields: [publicUserId], references: [id])
-  publicUserId String?
+  User         User?       @relation(fields: [UserId], references: [id])
+  UserId       String?
+  PublicUser   PublicUser? @relation(fields: [id], references: [id])
+
+  @@unique([id])
+}
+
+enum UserType {
+  PUBLIC_FIGURE
+  BRAND
 }
