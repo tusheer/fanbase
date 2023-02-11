@@ -11,9 +11,8 @@ const Template: ComponentStory<typeof Modal> = (args) => <Modal {...args}></Moda
 export const Default = Template.bind({});
 
 Default.args = {
-    className: 'max-w-3xl',
+    className: 'max-w-2xl rounded',
     open: true,
-
     onClose: () => console.log('ehee'),
-    children: <div>Hello THis is new</div>,
+    children: <div className="h-72">Hello THis is new</div>,
 };

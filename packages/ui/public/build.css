@@ -548,6 +548,10 @@ video {
   height: 2.5rem;
 }
 
+.h-72 {
+  height: 18rem;
+}
+
 .h-9 {
   height: 2.25rem;
 }
@@ -560,8 +564,8 @@ video {
   width: 100%;
 }
 
-.max-w-3xl {
-  max-width: 48rem;
+.max-w-2xl {
+  max-width: 42rem;
 }
 
 .items-center {
@@ -683,6 +687,14 @@ video {
 
 .outline-0 {
   outline-width: 0px;
+}
+
+.transition {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 .transition-all {
