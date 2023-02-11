@@ -1,4 +1,4 @@
-import { celebritySignupSchema, signinSchema } from 'schema';
+import { celebritySignupSchema, signinSchema } from '@fanbase/schema';
 import protectedProcedure from '../../middleware/protectedTrpcProdedure';
 import { publicProcedure, router } from '../../utils/trpc';
 

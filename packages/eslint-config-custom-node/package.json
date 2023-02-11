@@ -1,5 +1,5 @@
 {
-    "name": "eslint-config-custom-node",
+    "name": "@fanbase/eslint-config-custom-node",
     "version": "0.0.0",
     "main": "index.js",
     "license": "MIT",

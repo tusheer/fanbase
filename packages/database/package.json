@@ -1,6 +1,6 @@
 {
     "version": "1.0.0",
-    "name": "database",
+    "name": "@fanbase/database",
     "main": "./index.ts",
     "types": "./index.ts",
     "scripts": {

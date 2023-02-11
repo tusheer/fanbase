@@ -1,5 +1,5 @@
+import { Prisma } from '@fanbase/database';
 import { TRPCError } from '@trpc/server';
-import { Prisma } from 'database';
 import { CookieOptions } from 'express';
 import { Context } from '../..';
 import customConfig from '../../config/default';

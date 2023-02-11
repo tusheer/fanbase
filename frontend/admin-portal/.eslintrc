@@ -1,6 +1,6 @@
 {
     "root": true,
-    "extends": ["eslint-config-custom-react", "next/core-web-vitals", "next"],
+    "extends": ["@fanbase/eslint-config-custom-react", "next/core-web-vitals", "next"],
     "rules": {
         "no-console": "warn"
     },

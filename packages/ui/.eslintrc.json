@@ -1,6 +1,6 @@
 {
     "root": true,
-    "extends": ["eslint-config-custom-react", "next/core-web-vitals", "next", "plugin:storybook/recommended"],
+    "extends": ["@fanbase/eslint-config-custom-react", "next/core-web-vitals", "next", "plugin:storybook/recommended"],
     "rules": {
         "no-console": "warn"
     },
