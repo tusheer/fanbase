@@ -4,10 +4,10 @@
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
-        "zod": "^3.20.2"
+        "zod": "^3.20.6"
     },
     "devDependencies": {
-        "typescript": "^4.9.4"
+        "typescript": "^4.9.5"
     },
     "publishConfig": {
         "access": "public"

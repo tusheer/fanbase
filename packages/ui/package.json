@@ -27,12 +27,12 @@
         "@storybook/manager-webpack5": "^6.5.16",
         "@storybook/react": "^6.5.16",
         "@storybook/testing-library": "^0.0.13",
-        "@types/node": "^18.11.18",
+        "@types/node": "^18.13.0",
         "@types/react": "^18.0.27",
         "@types/react-dom": "^18.0.10",
-        "babel-loader": "^8.3.0",
+        "babel-loader": "^9.1.2",
         "concurrently": "^7.6.0",
-        "eslint": "^8.33.0",
+        "eslint": "^8.34.0",
         "eslint-config-custom-react": "*",
         "eslint-plugin-storybook": "^0.6.10",
         "next": "^13.1.6",
@@ -42,8 +42,8 @@
     },
     "dependencies": {
         "class-variance-authority": "^0.4.0",
-        "framer-motion": "^9.0.1",
-        "tailwindcss": "^3.2.4",
+        "framer-motion": "^9.0.2",
+        "tailwindcss": "^3.2.6",
         "tiny-invariant": "^1.3.1"
     }
 }
