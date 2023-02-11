@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Button, Modal } from 'ui/components';
 import { Edit } from 'ui/icons/Pen';
 import trpc from '../src/config/trpc';
 import AuthLayout from '../src/layouts/AuthLayout';
@@ -6,6 +7,7 @@ import BaseLayout from '../src/layouts/BaseLayout';
 import { DecodedUser, withSession } from './_app';
 export default function Web() {
     const { isLoading, isError } = trpc.user.getCelebrityProfile.useQuery();
+    const [isOpen, setisOpen] = useState(false);
 
     if (isError) {
         return <div>Error happen</div>;
@@ -13,6 +15,7 @@ export default function Web() {
     {
         isLoading ? <div>...Loading</div> : null;
     }
+
     return (
         <section className="mx-auto max-w-7xl px-5">
             <div className="mt-3 flex gap-7">
@@ -36,6 +39,10 @@ export default function Web() {
                 </div>
                 <div className="h-72 w-3/12 rounded-md bg-gray-100"></div>
             </div>
+            <Button onClick={() => setisOpen(true)}>Hei man</Button>
+            <Modal className="h-56 max-w-3xl rounded-xl border" open={isOpen} onClose={() => setisOpen(false)}>
+                <div>Hello THis is new</div>
+            </Modal>
         </section>
     );
 }
