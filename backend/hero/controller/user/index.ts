@@ -8,8 +8,6 @@ import userServices from '../../service/user';
 import redisClient from '../../utils/connectRedis';
 import { Context } from '../../utils/trpc';
 
-// import redisClient from '../../utils/connectRedis';
-
 const stringReplace = (str: string) => str.replace(' ', '-').toLowerCase();
 
 export const createCelebrityUserController = async ({
@@ -56,7 +54,7 @@ export const createCelebrityUserController = async ({
             data: {
                 refreshToken: refresh_token,
                 userAgent: JSON.stringify(deviceInfo),
-                celebrityId: celebrityUser.id,
+                userId: celebrityUser.id,
             },
         });
         userServices.setUserCookies(ctx, {
@@ -125,7 +123,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
                     id: device_uid,
                 },
                 include: {
-                    Celebrity: true,
+                    User: true,
                 },
             });
 
@@ -146,7 +144,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             data: {
                 refreshToken: refresh_token,
                 userAgent: JSON.stringify(deviceInfo),
-                celebrityId: celebrityUser.id,
+                userId: celebrityUser.id,
             },
         });
 
@@ -188,7 +186,7 @@ export const logoutCelebrityUserController = async ({ ctx }: { ctx: AuthContext 
                 id: device_uid,
             },
             select: {
-                Celebrity: true,
+                User: true,
             },
         });
 

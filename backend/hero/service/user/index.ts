@@ -23,21 +23,21 @@ const refreshTokenCookieOptions = {
     expires: new Date(Date.now() + 60 * 24 * 3600000),
 };
 
-const createCelebrityUser = async (createArg: Prisma.CelebrityCreateArgs) => {
-    return await prisma.celebrity.create(createArg);
+const createCelebrityUser = async (createArg: Prisma.UserCreateArgs) => {
+    return await prisma.user.create(createArg);
 };
 
-const findCelebrityUser = async <T extends Prisma.CelebritySelect | undefined>({
+const findCelebrityUser = async <T extends Prisma.UserSelect | undefined>({
     where = {},
     select,
 }: {
     select?: T;
-    where?: Prisma.CelebrityWhereUniqueInput;
+    where?: Prisma.UserWhereUniqueInput;
 }) => {
-    return (await prisma.celebrity.findUnique({
+    return (await prisma.user.findUnique({
         where,
         select,
-    })) as Prisma.CelebrityGetPayload<{ select: T }>;
+    })) as Prisma.UserGetPayload<{ select: T }>;
 };
 
 const createUserSession = async (creaetArg: Prisma.SessionCreateArgs) => {
@@ -49,7 +49,7 @@ const deleteUserSession = async (deleteArg: Prisma.SessionDeleteArgs) => {
 };
 
 const setUserInRedis = (
-    user: Prisma.CelebrityGetPayload<{
+    user: Prisma.UserGetPayload<{
         select: {
             username: true;
             email: true;
@@ -67,7 +67,7 @@ const deleteUserSessionInRedis = async (username: string, deviceUid: string) => 
     const jsonUser = (await redisClient.get(username)) as string;
 
     if (jsonUser) {
-        const user = JSON.parse(jsonUser) as Prisma.CelebrityGetPayload<{
+        const user = JSON.parse(jsonUser) as Prisma.UserGetPayload<{
             select: {
                 session: true;
             };
