@@ -2,7 +2,7 @@ import { cva } from 'class-variance-authority';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { forwardRef, InputHTMLAttributes, useId } from 'react';
 
-interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
+export interface IInputProps extends InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> {
     className?: string;
     label?: string;
     error?: boolean;
@@ -24,11 +24,17 @@ const inputCva = cva(
                 false: ' border-gray-300  focus:ring-brand-main   focus:border-brand-main  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500',
             },
         },
+        defaultVariants: {
+            error: false,
+        },
     }
 );
 
 export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IInputProps>(
-    ({ type = 'text', textArea, errorText, label, className = '', rows = 2, error, name = '', ...rest }, ref) => {
+    (
+        { type = 'text', textArea, errorText, label, className = '', rows = 2, error = false, name = '', ...rest },
+        ref
+    ) => {
         const uid = useId();
         return (
             <div className={className}>

@@ -50,7 +50,7 @@ export const getRefreshToken: RequestHandler = async (req, res) => {
                     id: device_uid,
                 },
                 include: {
-                    Celebrity: true,
+                    User: true,
                 },
             });
 
@@ -71,7 +71,7 @@ export const getRefreshToken: RequestHandler = async (req, res) => {
             data: {
                 refreshToken: refresh_token,
                 userAgent: JSON.stringify(deviceInfo),
-                celebrityId: celebrityUser.id,
+                userId: celebrityUser.id,
             },
         });
 
