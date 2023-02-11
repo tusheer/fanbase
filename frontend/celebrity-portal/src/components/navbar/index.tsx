@@ -1,6 +1,6 @@
+import { Button } from '@fanbase/ui/components';
 import Link from 'next/link';
 import Router from 'next/router';
-import { Button } from 'ui/components';
 import trpc from '../../config/trpc';
 import useUserStore from '../../store/user';
 

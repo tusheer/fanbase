@@ -1,7 +1,7 @@
+import { Button, Modal } from '@fanbase/ui/components';
+import { Edit } from '@fanbase/ui/icons/Pen';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import { Button, Modal } from 'ui/components';
-import { Edit } from 'ui/icons/Pen';
 import trpc from '../src/config/trpc';
 import AuthLayout from '../src/layouts/AuthLayout';
 import BaseLayout from '../src/layouts/BaseLayout';
