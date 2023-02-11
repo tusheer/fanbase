@@ -19,53 +19,42 @@ model Admin {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  email          String         @unique
-  username       String         @unique
+  id             String       @id @default(cuid())
+  email          String       @unique
+  username       String       @unique
   firstName      String?
   lastName       String?
   phone          String?
-  password       String         @db.Text
-  createdAt      DateTime       @default(now())
-  updateAt       DateTime       @updatedAt
+  password       String       @db.Text
+  createdAt      DateTime     @default(now())
+  updateAt       DateTime     @updatedAt
   country        String?
   shop           Shop[]
   Product        Product[]
-  ProfilePicture ProfilePicture @relation(fields: [id], references: [userId])
-  coverImage     String?
-  userType       UserType       @default(PUBLIC_FIGURE)
-  // socialMedia    SocialMedia?   @relation(name: "social_media", fields: [id], references: [userId])
+  ProfilePicture Json?
+  coverImage     Json?
+  userType       UserType     @default(PUBLIC_FIGURE)
+  socialMedia    Json?
   topFan         PublicUser[]
-  socialMediaId  String?
   session        Session[]
 }
 
-model ProfilePicture {
-  userId   String @unique
-  sm       String
-  xsm      String
-  md       String
-  lg       String
-  blurHash String
-  User     User?
-
-  @@id([userId])
-}
-
 model PublicUser {
-  id          String       @id @default(cuid())
-  email       String       @unique
-  username    String?      @unique
-  firstName   String?
-  lastName    String?
-  phone       Int?
-  password    String       @db.Text
-  createdAt   DateTime     @default(now())
-  updateAt    DateTime     @updatedAt
-  country     String?
-  fan         User[]
-  session     Session[]
-  SocialMedia SocialMedia? @relation(fields: [id], references: [userId])
+  id             String    @id @default(cuid())
+  email          String    @unique
+  username       String?   @unique
+  firstName      String?
+  lastName       String?
+  phone          Int?
+  password       String    @db.Text
+  createdAt      DateTime  @default(now())
+  updateAt       DateTime  @updatedAt
+  country        String?
+  fan            User[]
+  session        Session[]
+  socialMedia    Json?
+  ProfilePicture Json?
+  coverImage     Json?
 }
 
 model Product {
@@ -101,17 +90,6 @@ model ProductImage {
   sizes       String[]
   Product     Product? @relation(fields: [productId], references: [id])
   productId   String?
-}
-
-model SocialMedia {
-  userId     String      @unique
-  facebook   String?     @unique
-  youtube    String?     @unique
-  tiktok     String?     @unique
-  instragram String?     @unique
-  PublicUser PublicUser?
-
-  @@id([userId])
 }
 
 model Session {
