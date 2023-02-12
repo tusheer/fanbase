@@ -1,3 +1,4 @@
+import { User } from '@fanbase/database';
 import { CelebritySignupType, SigninType } from '@fanbase/schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
@@ -206,13 +207,44 @@ export const logoutCelebrityUserController = async ({ ctx }: { ctx: AuthContext 
     }
 };
 
-//TODO : Add a expires in session management
-//TODO : If no profile get from session then search data in database
-//TODO : Add type in router
-
 export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
     const userName = ctx.user.username;
-    const celebrityUser = await redisClient.get(userName);
+    const findUserInRedis = (await redisClient.get(userName)) as User | null;
 
-    return celebrityUser;
+    if (findUserInRedis) {
+        return {
+            firstName: findUserInRedis.firstName,
+            lastName: findUserInRedis.lastName,
+            profilePicture: findUserInRedis.profilePicture,
+            email: findUserInRedis.email,
+            phone: findUserInRedis.email,
+            socialMedia: findUserInRedis.socialMedia,
+        } as User;
+    }
+
+    const findUserInDatabase = await userServices.findCelebrityUser({
+        where: {
+            username: userName,
+        },
+        select: {
+            firstName: true,
+            lastName: true,
+            profilePicture: true,
+            email: true,
+            phone: true,
+            socialMedia: true,
+        },
+    });
+
+    if (!findUserInDatabase) {
+        throw new TRPCError({
+            code: 'BAD_REQUEST',
+        });
+    }
+
+    return findUserInDatabase;
+};
+
+export const updateCelebrityProfilePicture = () => {
+    return {};
 };

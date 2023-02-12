@@ -1,18 +1,20 @@
+const { mergeConfig } = require('vite');
 
 module.exports = {
   stories: ['../components/**/*.stories.tsx'],
-  staticDirs: ['../public'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    "@storybook/addon-actions",
-  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials',],
   framework: '@storybook/react',
   core: {
-    builder: '@storybook/builder-webpack5',
+    builder: '@storybook/builder-vite',
   },
-  features: {
-    interactionsDebugger: true,
+  async viteFinal(config) {
+    // Merge custom configuration into the default config
+    return mergeConfig(config, {
+      // Add dependencies to pre-optimization
+      optimizeDeps: {
+        include: ['@storybook/addon-a11y', "@storybook/addon-interactions", "@storybook/addon-actions"],
+      },
+    });
   },
+
 };

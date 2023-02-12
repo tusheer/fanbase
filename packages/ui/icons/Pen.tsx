@@ -27,3 +27,38 @@ export const Edit: React.FC<Icon> = ({ className = '' }) => {
         </svg>
     );
 };
+// .storybook/main.ts
+
+// module.exports = {
+//     stories: ['../components/**/*.stories.tsx'],
+//     staticDirs: ['../public'],
+//     addons: [
+//         '@storybook/addon-links',
+//         '@storybook/addon-essentials',
+//         '@storybook/addon-interactions',
+//         '@storybook/addon-actions',
+//     ],
+//     framework: '@storybook/react',
+//     core: {
+//         builder: '@storybook/builder-vite',
+//     },
+
+//     async viteFinal(config, options) {
+//         // Add your configuration here
+//         return config;
+//     },
+// };
+
+// main;
+
+// import "../public/build.css"
+
+// export const parameters = {
+//     actions: { argTypesRegex: "^on[A-Z].*" },
+//     controls: {
+//       matchers: {
+//         color: /(background|color)$/i,
+//         date: /Date$/,
+//       },
+//     },
+//   }
