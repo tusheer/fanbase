@@ -1,6 +1,7 @@
+import type { AppRouter } from '@fanbase/hero';
+import { ImageType } from '@fanbase/schema';
 import { Inter } from '@next/font/google';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import type { AppRouter } from 'hero';
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
@@ -17,11 +18,21 @@ type AppPropsWithLayout = AppProps & {
 };
 
 export type DecodedUser = {
+    username: string;
     email: string;
     id: string;
-    username: string;
-    iat: number;
-    exp: number;
+    coverImage: ImageType | null;
+    firstName: string;
+    lastName: string;
+    phone: string | null;
+    socialMedia: any | null;
+    updateAt: Date;
+    createdAt: Date;
+    country: string | null;
+    userType: string;
+    profilePicture: ImageType | null;
+    iat?: number;
+    exp?: number;
 };
 
 const inter = Inter({ weight: ['300', '400', '500', '600', '700', '800', '900'], subsets: ['latin'] });

@@ -39,7 +39,7 @@ export const updateProfilePicturerSchema = object({
 
 export type CelebritySignupType = ZodInfer<typeof celebritySignupSchema>;
 export type SigninType = ZodInfer<typeof signinSchema>;
-export type ProfilePictureType = ZodInfer<typeof updateProfilePicturerSchema>;
+export type ImageType = ZodInfer<typeof updateProfilePicturerSchema>;
 
 export type DeviceInfoType = {
     isMobile: boolean;

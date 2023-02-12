@@ -1,5 +1,5 @@
 import { User } from '@fanbase/database';
-import { CelebritySignupType, DeviceInfoType, ProfilePictureType, SigninType } from '@fanbase/schema';
+import { CelebritySignupType, DeviceInfoType, ImageType, SigninType } from '@fanbase/schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
 import useragent from 'express-useragent';
@@ -125,7 +125,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
     const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string) as DeviceInfoType;
 
     try {
-        const celebrityUser = await userServices.findCelebrityUser({
+        const { id, password, ...celebriryUser } = await userServices.findCelebrityUser({
             where: {
                 email: input.email,
             },
@@ -148,14 +148,14 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             },
         });
 
-        if (!celebrityUser) {
+        if (!id) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
                 message: 'User is not exit',
             });
         }
 
-        const verifyPassword = await argon2.verify(celebrityUser.password, input.password);
+        const verifyPassword = await argon2.verify(password, input.password);
         if (!verifyPassword) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
@@ -165,7 +165,7 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
 
         //if user trying to singin from the same device, then we remove his currect session and reassign
         const device_uid = ctx.req.cookies.device_uid;
-        const findSessionInUser = celebrityUser.session.find((session) => session.id === device_uid);
+        const findSessionInUser = celebriryUser.session.find((session) => session.id === device_uid);
 
         if (findSessionInUser) {
             await userServices.deleteUserSession({
@@ -177,30 +177,19 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
                 },
             });
 
-            userServices.deleteUserSessionInRedis(celebrityUser.username, device_uid);
+            userServices.deleteUserSessionInRedis(celebriryUser.userType, device_uid);
 
             userServices.removeUserCookies(ctx);
         }
 
         // Create the Access and refresh Tokens
         const { access_token, refresh_token } = userServices.signTokens({
-            country: celebrityUser.country,
-            coverImage: celebrityUser.coverImage,
-            createdAt: celebrityUser.createdAt,
-            email: celebrityUser.email,
-            firstName: celebrityUser.firstName,
-            id: celebrityUser.id,
-            lastName: celebrityUser.lastName,
-            phone: celebrityUser.phone,
-            profilePicture: celebrityUser.profilePicture,
-            socialMedia: celebrityUser.socialMedia,
-            updateAt: celebrityUser.updateAt,
-            username: celebrityUser.username,
-            userType: celebrityUser.userType,
+            ...celebriryUser,
+            id,
         });
 
         //Create sesstion for user agent
-        const session = await userServices.createUserSession({
+        const _session = await userServices.createUserSession({
             data: {
                 refreshToken: refresh_token,
                 userAgent: {
@@ -212,29 +201,30 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
                     platform: deviceInfo.platform,
                     source: deviceInfo.source,
                 },
-                userId: celebrityUser.id,
+                userId: id,
             },
         });
 
         //remove previous session and add new
-        const sessionIndex = celebrityUser.session.findIndex((data) => data.id === device_uid);
-        celebrityUser.session.splice(sessionIndex, 1, session);
+        const sessionIndex = celebriryUser.session.findIndex((data) => data.id === device_uid);
+        celebriryUser.session.splice(sessionIndex, 1, _session);
 
         userServices.setUserInRedis({
-            ...celebrityUser,
+            ...celebriryUser,
+            id,
         });
 
         //  Send Access Token in Cookie
         userServices.setUserCookies(ctx, {
             access_token,
             refresh_token,
-            session_uid: session.id,
+            session_uid: _session.id,
         });
 
         return {
-            email: celebrityUser.email,
-            id: celebrityUser.id,
-            username: celebrityUser.username,
+            id,
+            email: celebriryUser.email,
+            username: celebriryUser.username,
         };
     } catch (error) {
         throw new TRPCError({
@@ -291,6 +281,8 @@ export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext 
                 coverImage: parseUser.coverImage,
                 country: parseUser.country,
                 id: parseUser.id,
+                updateAt: parseUser.updateAt,
+                createdAt: parseUser.createdAt,
             } as User;
         }
 
@@ -306,6 +298,12 @@ export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext 
                 phone: true,
                 socialMedia: true,
                 country: true,
+                updateAt: true,
+                createdAt: true,
+                coverImage: true,
+                id: true,
+                username: true,
+                userType: true,
             },
         });
 
@@ -323,13 +321,7 @@ export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext 
     }
 };
 
-export const updateCelebrityProfilePicture = async ({
-    ctx,
-    input,
-}: {
-    ctx: AuthContext;
-    input: ProfilePictureType;
-}) => {
+export const updateCelebrityProfilePicture = async ({ ctx, input }: { ctx: AuthContext; input: ImageType }) => {
     try {
         const updateUserProfilePicturer = await userServices.updateUser({
             data: {
