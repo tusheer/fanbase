@@ -148,6 +148,8 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
             },
         });
 
+        console.log({ celebriryUser });
+
         if (!id) {
             throw new TRPCError({
                 code: 'BAD_REQUEST',
@@ -274,9 +276,10 @@ export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext 
             return {
                 firstName: parseUser.firstName,
                 lastName: parseUser.lastName,
+                username: parseUser.username,
                 profilePicture: parseUser.profilePicture,
                 email: parseUser.email,
-                phone: parseUser.email,
+                phone: parseUser.phone,
                 socialMedia: parseUser.socialMedia,
                 coverImage: parseUser.coverImage,
                 country: parseUser.country,

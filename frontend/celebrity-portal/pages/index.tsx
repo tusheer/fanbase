@@ -2,21 +2,16 @@ import { Button, Modal } from '@fanbase/ui/components';
 import { Edit } from '@fanbase/ui/icons/Pen';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import trpc from '../src/config/trpc';
+
 import AuthLayout from '../src/layouts/AuthLayout';
 import BaseLayout from '../src/layouts/BaseLayout';
+import useUserStore from '../src/store/user';
 import { DecodedUser, withSession } from './_app';
 
 export default function Web() {
-    const { isLoading, isError } = trpc.user.getCelebrityProfile.useQuery();
-    const [isOpen, setisOpen] = useState(false);
+    const user = useUserStore((state) => state.user);
 
-    if (isError) {
-        return <div>Error happen</div>;
-    }
-    {
-        isLoading ? <div>...Loading</div> : null;
-    }
+    const [isOpen, setisOpen] = useState(false);
 
     return (
         <section className="mx-auto max-w-7xl px-5">
@@ -46,9 +41,10 @@ export default function Web() {
                     <div className="flex justify-between px-5">
                         <div className="mt-14">
                             <h2 className="flex items-center gap-3 text-xl font-extrabold">
-                                Jane Alam Tusher <div className="bg-brand-main h-4 w-4 rounded-full"></div>
+                                {user?.firstName} {user?.lastName}{' '}
+                                <div className="bg-brand-main h-4 w-4 rounded-full"></div>
                             </h2>
-                            <p className="text-md font-medium text-gray-400">@tusheer</p>
+                            <p className="text-md font-medium text-gray-400">@{user?.username}</p>
                         </div>
                         <div>
                             <div
