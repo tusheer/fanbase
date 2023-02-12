@@ -51,9 +51,20 @@ const deleteUserSession = async (deleteArg: Prisma.SessionDeleteArgs) => {
 const setUserInRedis = (
     user: Prisma.UserGetPayload<{
         select: {
-            username: true;
             email: true;
+            id: true;
+            username: true;
             session: true;
+            coverImage: true;
+            firstName: true;
+            lastName: true;
+            phone: true;
+            socialMedia: true;
+            updateAt: true;
+            createdAt: true;
+            country: true;
+            userType: true;
+            profilePicture: true;
         };
     }>
 ) => {
@@ -103,7 +114,25 @@ const removeUserCookies = (ctx: Context) => {
     ctx.res.clearCookie('logged_in');
 };
 
-export const signTokens = (user: { email: string; id: string; username: string | null }) => {
+export const signTokens = (
+    user: Prisma.UserGetPayload<{
+        select: {
+            email: true;
+            id: true;
+            username: true;
+            coverImage: true;
+            firstName: true;
+            lastName: true;
+            phone: true;
+            socialMedia: true;
+            updateAt: true;
+            createdAt: true;
+            country: true;
+            userType: true;
+            profilePicture: true;
+        };
+    }>
+) => {
     try {
         // 2. Create Access and Refresh tokens
         const access_token = signJwt(user, 'accessTokenPrivateKey', {

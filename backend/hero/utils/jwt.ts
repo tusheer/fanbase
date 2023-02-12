@@ -3,7 +3,7 @@ import jwt, { SignOptions } from 'jsonwebtoken';
 import customConfig from '../config/default';
 
 export const signJwt = (
-    payload: { [key: string]: string | null },
+    payload: { [key: string]: null | any },
     key: 'accessTokenPrivateKey' | 'refreshTokenPrivateKey',
     options: SignOptions = {}
 ) => {

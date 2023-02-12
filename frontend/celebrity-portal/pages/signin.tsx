@@ -1,8 +1,8 @@
+import { signinSchema, SigninType } from '@fanbase/schema';
+import { Button, TextInput } from '@fanbase/ui/components';
 import Router from 'next/router';
 import { ReactNode } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { signinSchema, SigninType } from 'schema';
-import { Button, TextInput } from 'ui/components';
 import trpc from '../src/config/trpc';
 import BaseLayout from '../src/layouts/BaseLayout';
 import removeNullOrEmpty from '../src/utils/removeNullOrEmpty';

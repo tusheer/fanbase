@@ -1,5 +1,5 @@
 import { User } from '@fanbase/database';
-import { CelebritySignupType, ProfilePictureType, SigninType } from '@fanbase/schema';
+import { CelebritySignupType, DeviceInfoType, ProfilePictureType, SigninType } from '@fanbase/schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
 import useragent from 'express-useragent';
@@ -31,7 +31,7 @@ export const createCelebrityUserController = async ({
                 message: 'User already exit',
             });
         }
-        const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string);
+        const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string) as DeviceInfoType;
 
         //TODO : Add lodash for utils
         const username = `${stringReplace(firstName)}-${stringReplace(lastName)}-${nanoid(6)}`;
@@ -46,15 +46,54 @@ export const createCelebrityUserController = async ({
                 phone: phoneNumber,
                 username,
             },
+            select: {
+                email: true,
+                id: true,
+                username: true,
+                password: true,
+                session: true,
+                coverImage: true,
+                firstName: true,
+                lastName: true,
+                phone: true,
+                socialMedia: true,
+                updateAt: true,
+                createdAt: true,
+                country: true,
+                userType: true,
+                profilePicture: true,
+            },
         });
 
         // Create the Access and refresh Tokens
-        const { access_token, refresh_token } = userServices.signTokens(celebrityUser);
+        const { access_token, refresh_token } = userServices.signTokens({
+            country: celebrityUser.country,
+            coverImage: celebrityUser.coverImage,
+            createdAt: celebrityUser.createdAt,
+            email: celebrityUser.email,
+            firstName: celebrityUser.firstName,
+            id: celebrityUser.id,
+            lastName: celebrityUser.lastName,
+            phone: celebrityUser.phone,
+            profilePicture: celebrityUser.profilePicture,
+            socialMedia: celebrityUser.socialMedia,
+            updateAt: celebrityUser.updateAt,
+            username: celebrityUser.username,
+            userType: celebrityUser.userType,
+        });
 
         const session = await userServices.createUserSession({
             data: {
                 refreshToken: refresh_token,
-                userAgent: JSON.stringify(deviceInfo),
+                userAgent: {
+                    isMobile: deviceInfo.isMobile,
+                    isiPhone: deviceInfo.isiPhone,
+                    isAndroid: deviceInfo.isAndroid,
+                    browser: deviceInfo.browser,
+                    os: deviceInfo.os,
+                    platform: deviceInfo.platform,
+                    source: deviceInfo.source,
+                },
                 userId: celebrityUser.id,
             },
         });
@@ -83,7 +122,7 @@ export const createCelebrityUserController = async ({
 };
 
 export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; ctx: Context }) => {
-    const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string);
+    const deviceInfo = useragent.parse(ctx.req.headers['user-agent'] as string) as DeviceInfoType;
 
     try {
         const celebrityUser = await userServices.findCelebrityUser({
@@ -94,8 +133,18 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
                 email: true,
                 id: true,
                 username: true,
-                password: true,
                 session: true,
+                coverImage: true,
+                firstName: true,
+                lastName: true,
+                phone: true,
+                socialMedia: true,
+                updateAt: true,
+                password: true,
+                createdAt: true,
+                country: true,
+                userType: true,
+                profilePicture: true,
             },
         });
 
@@ -135,16 +184,34 @@ export const singinCelebrityUser = async ({ input, ctx }: { input: SigninType; c
 
         // Create the Access and refresh Tokens
         const { access_token, refresh_token } = userServices.signTokens({
+            country: celebrityUser.country,
+            coverImage: celebrityUser.coverImage,
+            createdAt: celebrityUser.createdAt,
             email: celebrityUser.email,
+            firstName: celebrityUser.firstName,
             id: celebrityUser.id,
+            lastName: celebrityUser.lastName,
+            phone: celebrityUser.phone,
+            profilePicture: celebrityUser.profilePicture,
+            socialMedia: celebrityUser.socialMedia,
+            updateAt: celebrityUser.updateAt,
             username: celebrityUser.username,
+            userType: celebrityUser.userType,
         });
 
         //Create sesstion for user agent
         const session = await userServices.createUserSession({
             data: {
                 refreshToken: refresh_token,
-                userAgent: JSON.stringify(deviceInfo),
+                userAgent: {
+                    isMobile: deviceInfo.isMobile,
+                    isiPhone: deviceInfo.isiPhone,
+                    isAndroid: deviceInfo.isAndroid,
+                    browser: deviceInfo.browser,
+                    os: deviceInfo.os,
+                    platform: deviceInfo.platform,
+                    source: deviceInfo.source,
+                },
                 userId: celebrityUser.id,
             },
         });
@@ -210,16 +277,20 @@ export const logoutCelebrityUserController = async ({ ctx }: { ctx: AuthContext 
 export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
     try {
         const userName = ctx.user.username;
-        const findUserInRedis = (await redisClient.get(userName)) as User | null;
+        const findUserInRedis = (await redisClient.get(userName)) as string | null;
 
         if (findUserInRedis) {
+            const parseUser = JSON.parse(findUserInRedis) as User;
             return {
-                firstName: findUserInRedis.firstName,
-                lastName: findUserInRedis.lastName,
-                profilePicture: findUserInRedis.profilePicture,
-                email: findUserInRedis.email,
-                phone: findUserInRedis.email,
-                socialMedia: findUserInRedis.socialMedia,
+                firstName: parseUser.firstName,
+                lastName: parseUser.lastName,
+                profilePicture: parseUser.profilePicture,
+                email: parseUser.email,
+                phone: parseUser.email,
+                socialMedia: parseUser.socialMedia,
+                coverImage: parseUser.coverImage,
+                country: parseUser.country,
+                id: parseUser.id,
             } as User;
         }
 
@@ -234,6 +305,7 @@ export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext 
                 email: true,
                 phone: true,
                 socialMedia: true,
+                country: true,
             },
         });
 
