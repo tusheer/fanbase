@@ -1,5 +1,5 @@
 import { User } from '@fanbase/database';
-import { CelebritySignupType, SigninType } from '@fanbase/schema';
+import { CelebritySignupType, ProfilePictureType, SigninType } from '@fanbase/schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
 import useragent from 'express-useragent';
@@ -208,43 +208,73 @@ export const logoutCelebrityUserController = async ({ ctx }: { ctx: AuthContext 
 };
 
 export const getCelebrityProfileController = async ({ ctx }: { ctx: AuthContext }) => {
-    const userName = ctx.user.username;
-    const findUserInRedis = (await redisClient.get(userName)) as User | null;
+    try {
+        const userName = ctx.user.username;
+        const findUserInRedis = (await redisClient.get(userName)) as User | null;
 
-    if (findUserInRedis) {
-        return {
-            firstName: findUserInRedis.firstName,
-            lastName: findUserInRedis.lastName,
-            profilePicture: findUserInRedis.profilePicture,
-            email: findUserInRedis.email,
-            phone: findUserInRedis.email,
-            socialMedia: findUserInRedis.socialMedia,
-        } as User;
-    }
+        if (findUserInRedis) {
+            return {
+                firstName: findUserInRedis.firstName,
+                lastName: findUserInRedis.lastName,
+                profilePicture: findUserInRedis.profilePicture,
+                email: findUserInRedis.email,
+                phone: findUserInRedis.email,
+                socialMedia: findUserInRedis.socialMedia,
+            } as User;
+        }
 
-    const findUserInDatabase = await userServices.findCelebrityUser({
-        where: {
-            username: userName,
-        },
-        select: {
-            firstName: true,
-            lastName: true,
-            profilePicture: true,
-            email: true,
-            phone: true,
-            socialMedia: true,
-        },
-    });
+        const findUserInDatabase = await userServices.findCelebrityUser({
+            where: {
+                username: userName,
+            },
+            select: {
+                firstName: true,
+                lastName: true,
+                profilePicture: true,
+                email: true,
+                phone: true,
+                socialMedia: true,
+            },
+        });
 
-    if (!findUserInDatabase) {
+        if (!findUserInDatabase) {
+            throw new TRPCError({
+                code: 'BAD_REQUEST',
+            });
+        }
+
+        return findUserInDatabase;
+    } catch (error) {
         throw new TRPCError({
             code: 'BAD_REQUEST',
         });
     }
-
-    return findUserInDatabase;
 };
 
-export const updateCelebrityProfilePicture = () => {
-    return {};
+export const updateCelebrityProfilePicture = async ({
+    ctx,
+    input,
+}: {
+    ctx: AuthContext;
+    input: ProfilePictureType;
+}) => {
+    try {
+        const updateUserProfilePicturer = await userServices.updateUser({
+            data: {
+                profilePicture: input,
+            },
+            where: {
+                username: ctx.user.username,
+            },
+        });
+
+        //TODO : add updated profile in session
+        // userServices.setUserInRedis()
+
+        return updateUserProfilePicturer;
+    } catch (error) {
+        throw new TRPCError({
+            code: 'BAD_REQUEST',
+        });
+    }
 };

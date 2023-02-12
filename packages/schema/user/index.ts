@@ -1,11 +1,18 @@
-import { infer as ZodInfer, object, string, ZodIssueCode } from 'zod';
+import { infer as ZodInfer, object, string, z, ZodIssueCode } from 'zod';
+
+const sizes = ['xsm', 'sm', 'md', 'lg'] as const;
+
+const imageFileSchema = object({
+    size: z.enum(sizes),
+    url: string(),
+    hash: string(),
+});
 
 export const celebritySignupSchema = object({
     email: string().email().trim(),
     password: string().min(6),
     firstName: string().min(1).trim(),
     lastName: string().min(1).trim(),
-    // phoneNumber: string().refine((stg) => stg?.length === 0 || stg?.length > 10, { message: 'Required 11 length' }),
     phoneNumber: string().min(11).max(13).trim().optional(),
     confirmPassword: string().min(6),
 }).superRefine(({ confirmPassword, password }, ctx) => {
@@ -23,5 +30,13 @@ export const signinSchema = object({
     password: string().min(6),
 });
 
+export const updateProfilePicturerSchema = object({
+    xsm: imageFileSchema,
+    sm: imageFileSchema,
+    md: imageFileSchema,
+    lg: imageFileSchema,
+});
+
 export type CelebritySignupType = ZodInfer<typeof celebritySignupSchema>;
 export type SigninType = ZodInfer<typeof signinSchema>;
+export type ProfilePictureType = ZodInfer<typeof updateProfilePicturerSchema>;

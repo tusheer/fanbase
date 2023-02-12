@@ -78,6 +78,8 @@ const deleteUserSessionInRedis = async (username: string, deviceUid: string) => 
     }
 };
 
+const updateUser = (updateArg: Prisma.UserUpdateArgs) => prisma.user.update(updateArg);
+
 const setUserCookies = (
     ctx: Context,
     { access_token, refresh_token, session_uid }: { access_token: string; refresh_token: string; session_uid: string }
@@ -132,4 +134,5 @@ export default {
     deleteUserSession,
     findCelebrityUser,
     signTokens,
+    updateUser,
 };
