@@ -1,8 +1,8 @@
+import { CelebritySignupType, SigninType } from '@fanbase/schema';
 import { TRPCError } from '@trpc/server';
 import argon2 from 'argon2';
 import useragent from 'express-useragent';
 import { nanoid } from 'nanoid';
-import { CelebritySignupType, SigninType } from 'schema';
 import { AuthContext } from '../../middleware/protectedTrpcProdedure';
 import userServices from '../../service/user';
 import redisClient from '../../utils/connectRedis';

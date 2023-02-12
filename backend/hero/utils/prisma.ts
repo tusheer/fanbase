@@ -1,5 +1,5 @@
 import { PrismaClient } from '@fanbase/database';
-export * from 'database';
+export * from '@fanbase/database';
 
 const prisma = new PrismaClient();
 

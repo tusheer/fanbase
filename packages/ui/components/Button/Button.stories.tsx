@@ -12,11 +12,11 @@ export const Default = Template.bind({});
 Default.args = {};
 
 export const Small = Template.bind({});
-Default.args = {
+Small.args = {
     size: 'sm',
 };
 
 export const Error = Template.bind({});
-Default.args = {
+Error.args = {
     intend: 'error',
 };
