@@ -19,7 +19,7 @@ interface IFileWithType {
     originalFileName?: string;
 }
 
-interface IUseFileUploadReturn {
+interface IUseImageUploadReturn {
     files: IFileWithType[];
     onUpload: () => Promise<{ name: string; url: string; originalFileName: string }[]>;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -27,7 +27,7 @@ interface IUseFileUploadReturn {
     onRemove: (index: number) => void;
 }
 
-const useImageFileUpload = ({ previousUploadedFiles, multiple = true }: IUseFileUpload): IUseFileUploadReturn => {
+const useImageFileUpload = ({ previousUploadedFiles, multiple = true }: IUseFileUpload): IUseImageUploadReturn => {
     const [files, setFiles] = useState<IFile[]>([]);
 
     useEffect(() => {

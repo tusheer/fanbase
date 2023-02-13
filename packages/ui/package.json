@@ -6,7 +6,9 @@
     },
     "files": [
         "components",
-        "icons"
+        "icons",
+        "hooks",
+        "utils"
     ],
     "license": "MIT",
     "scripts": {
