@@ -1,7 +1,7 @@
 {
     "extends": "@fanbase/tsconfig/react-library.json",
     "compilerOptions": {
-        "lib": ["dom"]
+        "lib": ["dom", "dom.iterable"]
     },
     "include": ["."],
     "exclude": ["dist", "build", "node_modules"]

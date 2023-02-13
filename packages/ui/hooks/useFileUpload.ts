@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getFileType, uploadAsset } from '../utils';
+import { getFileType, uploadImage } from '../utils';
 
 interface IUseFileUpload {
     previousUploadedFiles: { name: string; url: string }[];
@@ -27,7 +27,7 @@ interface IUseFileUploadReturn {
     onRemove: (index: number) => void;
 }
 
-const useFileUpload = ({ previousUploadedFiles, multiple = true }: IUseFileUpload): IUseFileUploadReturn => {
+const useImageFileUpload = ({ previousUploadedFiles, multiple = true }: IUseFileUpload): IUseFileUploadReturn => {
     const [files, setFiles] = useState<IFile[]>([]);
 
     useEffect(() => {
@@ -44,7 +44,7 @@ const useFileUpload = ({ previousUploadedFiles, multiple = true }: IUseFileUploa
         const _files = files.filter((file) => file.lastModified);
         const response = await Promise.allSettled(
             _files.map(async (file) => {
-                return await uploadAsset(file as File);
+                return await uploadImage(file as File);
             })
         );
 
@@ -118,4 +118,4 @@ const useFileUpload = ({ previousUploadedFiles, multiple = true }: IUseFileUploa
     };
 };
 
-export default useFileUpload;
+export default useImageFileUpload;

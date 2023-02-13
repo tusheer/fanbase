@@ -31,10 +31,13 @@ export const signinSchema = object({
 });
 
 export const updateProfilePicturerSchema = object({
-    xsm: imageFileSchema,
-    sm: imageFileSchema,
-    md: imageFileSchema,
-    lg: imageFileSchema,
+    sizes: object({
+        xsm: imageFileSchema,
+        sm: imageFileSchema,
+        md: imageFileSchema,
+        lg: imageFileSchema,
+    }).required(),
+    originalFileName: string(),
 });
 
 export type CelebritySignupType = ZodInfer<typeof celebritySignupSchema>;
