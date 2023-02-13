@@ -20,7 +20,8 @@ export const FileUploadInput: React.FC<IFileUploadInputProps> = ({
     return (
         <label
             htmlFor={`fileupload-${id}`}
-            className={`relative inline-block cursor-pointer overflow-hidden ${className}`}
+            className={`relative cursor-pointer overflow-hidden ${className}`}
+            tabIndex={0}
         >
             <input
                 key={Math.floor(Math.random() * 100 + 1)}
@@ -32,9 +33,8 @@ export const FileUploadInput: React.FC<IFileUploadInputProps> = ({
                 onChange={onChange}
                 accept={accept && accept}
             />
-            <span className="h-full w-full" role="button" aria-controls={`fileupload-${id}`} tabIndex={0}>
-                {children}
-            </span>
+
+            {children}
         </label>
     );
 };
