@@ -37,7 +37,7 @@ export const TextInput: React.FC<IInputProps> = forwardRef<HTMLInputElement, IIn
     ) => {
         const uid = useId();
         return (
-            <div className={className}>
+            <div id="autocomplete-valid" className={className}>
                 {label ? (
                     <label
                         htmlFor={uid + name}

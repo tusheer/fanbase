@@ -1,10 +1,10 @@
-import { Button, Modal } from '@fanbase/ui/components';
 import { Edit } from '@fanbase/ui/icons/Pen';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
 import AuthLayout from '../src/layouts/AuthLayout';
 import BaseLayout from '../src/layouts/BaseLayout';
+import UploadProfileModal from '../src/modules/profile/components/UploadProfileModal';
 import useUserStore from '../src/store/user';
 import { DecodedUser, withSession } from './_app';
 
@@ -57,19 +57,7 @@ export default function Web() {
                 <div className="h-72 w-3/12 rounded-md bg-gray-100"></div>
             </div>
 
-            <Modal className="max-w-2xl rounded-xl border" open={isOpen} onClose={() => setisOpen(false)}>
-                <div>
-                    <div className="border-b py-3 px-5 ">
-                        <h2 className="text-xl font-semibold">Edit profile picturer</h2>
-                    </div>
-                    <div className="px-5 py-7">
-                        <div className="mx-auto h-64 w-64 rounded-full bg-gray-200"></div>
-                    </div>
-                    <div className="flex justify-end gap-3 border-t px-5 py-3">
-                        <Button rounded>Save Photo</Button>
-                    </div>
-                </div>
-            </Modal>
+            <UploadProfileModal isOpen={isOpen} onClose={() => setisOpen(false)} />
         </section>
     );
 }

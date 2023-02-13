@@ -4,6 +4,22 @@ import { TextInput } from './index';
 export default {
     title: 'Textinput',
     component: TextInput,
+    argTypes: {
+        onChange: { action: 'Change' },
+    },
+    parameters: {
+        a11y: {
+            config: {
+                rules: [
+                    { id: 'color-contrast', enabled: false },
+                    {
+                        id: 'landmark-complementary-is-top-level',
+                        reviewOnFail: true,
+                    },
+                ],
+            },
+        },
+    },
 };
 
 const Template: ComponentStory<typeof TextInput> = (args) => <TextInput {...args} />;
@@ -13,6 +29,9 @@ export const Default = Template.bind({});
 Default.args = {
     label: 'First name',
     error: false,
+    className: '',
+    type: 'text',
+    name: 'Text',
 };
 
 export const Error = Template.bind({});

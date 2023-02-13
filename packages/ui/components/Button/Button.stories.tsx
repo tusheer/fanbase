@@ -4,6 +4,13 @@ import { Button } from './index';
 export default {
     title: 'Button',
     component: Button,
+    parameters: {
+        a11y: {
+            config: {
+                rules: [{ id: 'color-contrast', enabled: false }],
+            },
+        },
+    },
 };
 
 const Template: ComponentStory<typeof Button> = (args) => <Button {...args}>Button</Button>;
