@@ -23,7 +23,9 @@ const sizes = [
 
 export const singleImageUploadController: RequestHandler = async (req, res) => {
     const file = req.file;
-    if (!file) {
+    const blur_hash = req.body.blur_hash;
+
+    if (!file || !blur_hash) {
         return new Error('File is required');
     }
 
@@ -46,6 +48,10 @@ export const singleImageUploadController: RequestHandler = async (req, res) => {
 
     res.status(200).send({
         message: 'SUCCESS',
-        result: files,
+        result: {
+            sizes: files,
+            originalFileName: file.originalname,
+            hash: blur_hash,
+        },
     });
 };

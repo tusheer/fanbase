@@ -9,7 +9,7 @@ interface IProfileImageUploadProps {
 }
 
 const UploadProfileModal: React.FC<IProfileImageUploadProps> = ({ isOpen, onClose }) => {
-    const { files, onChange } = useImageUpload({
+    const { files, onChange, onUpload } = useImageUpload({
         previousUploadedFiles: [],
         multiple: false,
     });
@@ -39,7 +39,9 @@ const UploadProfileModal: React.FC<IProfileImageUploadProps> = ({ isOpen, onClos
                     </FileUploadInput>
                 </div>
                 <div className="flex justify-end gap-3 border-t px-5 py-3">
-                    <Button rounded>Save Photo</Button>
+                    <Button onClick={onUpload} rounded>
+                        Save Photo
+                    </Button>
                 </div>
             </div>
         </Modal>

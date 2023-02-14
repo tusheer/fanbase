@@ -5,7 +5,6 @@ const sizes = ['xsm', 'sm', 'md', 'lg'] as const;
 const imageFileSchema = object({
     size: z.enum(sizes),
     url: string(),
-    hash: string(),
 });
 
 export const celebritySignupSchema = object({
@@ -38,6 +37,7 @@ export const updateProfilePicturerSchema = object({
         lg: imageFileSchema,
     }).required(),
     originalFileName: string(),
+    hash: string(),
 });
 
 export type CelebritySignupType = ZodInfer<typeof celebritySignupSchema>;
