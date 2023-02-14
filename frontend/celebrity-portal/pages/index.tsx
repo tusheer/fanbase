@@ -1,4 +1,4 @@
-import { Edit } from '@fanbase/ui/icons/Pen';
+import { Pen } from '@fanbase/ui/icons/Pen';
 import Image from 'next/image';
 import React, { useState } from 'react';
 
@@ -19,7 +19,7 @@ export default function Web() {
                 <div className="w-9/12">
                     <div className="relative h-56  rounded-md bg-gray-100">
                         <div className="absolute right-0  bottom-2 flex h-8 w-8 items-center justify-center rounded-full border bg-white">
-                            <Edit className="h-5 w-5 text-gray-600" />
+                            <Pen className="h-5 w-5 text-gray-600" />
                         </div>
                         <div className="absolute -bottom-10 left-6 h-36 w-36 rounded-full bg-white p-1">
                             <div className="relative h-full w-full  rounded-full bg-gray-200 ">

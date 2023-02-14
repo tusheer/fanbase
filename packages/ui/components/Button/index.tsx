@@ -19,6 +19,7 @@ const buttonSyles = cva('text-white font-medium ', {
         intend: {
             primary: 'bg-brand-main hover:bg-brand-500 active:bg-brand-600',
             error: 'bg-red-600',
+            secondary: 'border-2 border-brand-500/70 text-brand-500',
         },
     },
     defaultVariants: {

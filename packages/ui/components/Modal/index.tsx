@@ -63,6 +63,7 @@ export const Modal: React.FC<IModalProps> = ({ className = '', children, onClose
         <AnimatePresence>
             {open ? (
                 <motion.div
+                    aria-hidden={!open}
                     aria-modal="true"
                     role="dialog"
                     variants={modalVariants}

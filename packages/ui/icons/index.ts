@@ -1,6 +1,6 @@
 export interface Icon {
     width?: number;
     height?: number;
-    fill?: number;
+    fill?: string;
     className?: string;
 }

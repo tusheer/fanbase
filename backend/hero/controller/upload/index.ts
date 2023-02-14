@@ -5,7 +5,7 @@ import sharp from 'sharp';
 const sizes = [
     {
         size: 'xsm',
-        quality: 5,
+        quality: 4,
     },
     {
         size: 'sm',
