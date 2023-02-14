@@ -34,7 +34,18 @@ export const getRefreshToken: RequestHandler = async (req, res) => {
                 email: true,
                 id: true,
                 username: true,
+                password: true,
                 session: true,
+                coverImage: true,
+                firstName: true,
+                lastName: true,
+                phone: true,
+                socialMedia: true,
+                updateAt: true,
+                createdAt: true,
+                country: true,
+                userType: true,
+                profilePicture: true,
             },
         });
 
@@ -61,9 +72,19 @@ export const getRefreshToken: RequestHandler = async (req, res) => {
 
         // Create the Access and refresh Tokens
         const { access_token, refresh_token } = userServices.signTokens({
+            country: celebrityUser.country,
+            coverImage: celebrityUser.coverImage,
+            createdAt: celebrityUser.createdAt,
             email: celebrityUser.email,
+            firstName: celebrityUser.firstName,
             id: celebrityUser.id,
+            lastName: celebrityUser.lastName,
+            phone: celebrityUser.phone,
+            profilePicture: celebrityUser.profilePicture,
+            socialMedia: celebrityUser.socialMedia,
+            updateAt: celebrityUser.updateAt,
             username: celebrityUser.username,
+            userType: celebrityUser.userType,
         });
 
         //Create sesstion for user agent
