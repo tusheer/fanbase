@@ -4,7 +4,7 @@
     "extends": "./base.json",
     "compilerOptions": {
         "target": "ES6",
-        "lib": ["dom", "dom.iterable", "esnext", "ES2020"],
+        "lib": ["DOM", "DOM.Iterable", "ESNext", "ES2020"],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": true,
