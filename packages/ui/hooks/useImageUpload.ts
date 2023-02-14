@@ -1,31 +1,22 @@
+import { ImageType } from '@fanbase/schema';
 import React, { useEffect, useState } from 'react';
-import { getFileType, uploadImage } from '../utils';
+import { uploadImage } from '../utils';
 
 interface IUseImageUploadParams {
     previousUploadedFiles: IFile[];
     multiple?: boolean;
 }
 
-interface UploadedType {
-    name: string;
-    url: string;
-    originalFileName: string;
-    imageHashUrl: string;
-}
-
-type IFile = UploadedType | File;
+type IFile = ImageType | File;
 
 interface IFileWithType {
-    type: string;
     name: string;
     url: string;
-    originalFileName: string;
-    imageHashUrl: string;
 }
 
 interface IUseImageUploadReturn {
     files: IFileWithType[];
-    onUpload: () => Promise<{ name: string; url: string; originalFileName: string }[]>;
+    onUpload: () => Promise<ImageType[]>;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     clear: () => void;
     onRemove: (index: number) => void;
@@ -47,8 +38,8 @@ const useImageFileUpload = ({
         setFiles([]);
     };
 
-    const onUpload = async (): Promise<any[]> => {
-        const _files = files.filter((file) => 'lastModified' in file && file.lastModified);
+    const onUpload = async (): Promise<ImageType[]> => {
+        const _files = files.filter((file) => 'lastModified' in file);
         const response = await Promise.allSettled(
             _files.map(async (file) => {
                 return await uploadImage(file as File);
@@ -58,9 +49,7 @@ const useImageFileUpload = ({
         const filterResponse = response
             .filter((file) => file.status === 'fulfilled')
             .map(({ value }: any) => ({
-                name: value.name,
-                url: value.url || '',
-                originalFileName: value.originalFileName,
+                ...value,
             }));
 
         const previousFiles = files
@@ -86,33 +75,29 @@ const useImageFileUpload = ({
         setFiles(_files);
     };
 
-    const genaretedPreviousUploadedTypes = (file: any): IFileWithType => {
-        const ext = getFileType(file.url);
+    const genareteUrlFromPreviousUploadedImage = (file: ImageType) => {
         return {
-            ...file,
-            type: ext,
+            url: file.sizes.md.url,
+            name: file.originalFileName,
         };
     };
 
-    //TODO : need to refactor here
+    const genareteUrlFromRecentSelectedImage = (file: File) => {
+        const url = URL.createObjectURL(file);
+        const name = file.name ? file.name : '';
+
+        return {
+            url,
+            name,
+        };
+    };
 
     const genaretedSelectFilesTypeAndUrl = (): IFileWithType[] => {
         return files.map((file) => {
             if ('lastModified' in file && file.lastModified) {
-                const type = getFileType(file.name ? file.name : '') || '';
-                const url = URL.createObjectURL(file as File);
-                const name = file.name ? file.name : '';
-                const originalFileName = file.name;
-
-                return {
-                    type,
-                    url,
-                    name,
-                    originalFileName,
-                    imageHashUrl: '',
-                };
+                return genareteUrlFromRecentSelectedImage(file);
             } else {
-                return genaretedPreviousUploadedTypes(file);
+                return genareteUrlFromPreviousUploadedImage(file as ImageType);
             }
         });
     };

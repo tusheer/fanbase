@@ -1,16 +1,15 @@
-const uploadAsset = async (file: File) => {
-    try {
-        await fetch('', {
-            method: 'PUT',
-            body: '',
-        });
+import { ImageType } from '@fanbase/schema';
 
-        return {
-            isError: false,
-            name: name,
-            originalFileName: file.name,
-            url: `localho`,
-        };
+const uploadAsset = async (file: File) => {
+    const formdata = new FormData();
+    formdata.append('file', file);
+    try {
+        const response = await fetch('http://localhost:4000/api/uploads/image', {
+            method: 'POST',
+            body: formdata,
+        }).then((data) => data.json());
+
+        return response as ImageType;
     } catch (error) {
         throw new Error();
     }
