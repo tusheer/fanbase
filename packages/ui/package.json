@@ -18,7 +18,9 @@
         "build:css": "npx tailwindcss -i ./public/tailwind.css -o ./public/build.css",
         "build:storybook": "build-storybook build",
         "watch:storybook": "start-storybook dev -p 6006",
-        "clean": "rimraf ./dist && rimraf node_modules"
+        "clean": "rimraf ./dist && rimraf node_modules",
+        "test": "vitest",
+        "coverage": "vitest run --coverage"
     },
     "devDependencies": {
         "@fanbase/eslint-config-custom-react": "*",
@@ -29,12 +31,12 @@
         "@storybook/addon-interactions": "^6.5.16",
         "@storybook/addon-links": "^6.5.16",
         "@storybook/addon-viewport": "^6.5.16",
-        "@storybook/builder-vite": "^0.4.1",
+        "@storybook/builder-vite": "^0.4.2",
         "@storybook/react": "^6.5.16",
         "@storybook/testing-library": "^0.0.13",
         "@types/node": "^18.13.0",
-        "@types/react": "^18.0.27",
-        "@types/react-dom": "^18.0.10",
+        "@types/react": "^18.0.28",
+        "@types/react-dom": "^18.0.11",
         "@vitejs/plugin-react": "^3.1.0",
         "concurrently": "^7.6.0",
         "eslint": "^8.34.0",
@@ -45,10 +47,13 @@
         "vite": "^4.1.1"
     },
     "dependencies": {
+        "@testing-library/react": "^13.4.0",
         "blurhash": "^2.0.4",
         "class-variance-authority": "^0.4.0",
         "framer-motion": "^9.0.2",
+        "happy-dom": "^8.4.0",
         "tailwindcss": "^3.2.6",
-        "tiny-invariant": "^1.3.1"
+        "tiny-invariant": "^1.3.1",
+        "vitest": "^0.28.5"
     }
 }
