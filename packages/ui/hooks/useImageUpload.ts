@@ -1,6 +1,5 @@
 import { ImageType } from '@fanbase/schema';
 import React, { useEffect, useState } from 'react';
-import { uploadImage } from '../utils';
 
 interface IUseImageUploadParams {
     previousUploadedFiles: IFile[];
@@ -40,6 +39,9 @@ const useImageFileUpload = ({
 
     const onUpload = async (): Promise<ImageType[]> => {
         const _files = files.filter((file) => 'lastModified' in file);
+
+        //lazy import
+        const uploadImage = await import('../utils').then((upload) => upload.uploadImage);
         const response = await Promise.allSettled(
             _files.map(async (file) => {
                 return await uploadImage(file as File);

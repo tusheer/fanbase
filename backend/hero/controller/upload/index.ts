@@ -40,7 +40,7 @@ export const singleImageUploadController: RequestHandler = async (req, res) => {
             await sharp(file.buffer).toFormat('jpeg').jpeg({ quality: quality }).toFile(filePath);
 
             files.push({
-                url: filePath,
+                url: `uploads/images/${newFilename}`,
                 size,
             });
         })
