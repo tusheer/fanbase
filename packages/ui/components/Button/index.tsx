@@ -6,7 +6,7 @@ export interface IButtonProps extends VariantProps<typeof buttonSyles>, React.Bu
     rounded?: boolean;
 }
 
-const buttonSyles = cva('text-white font-medium ', {
+const buttonSyles = cva(' font-medium ', {
     variants: {
         size: {
             md: 'h-10 px-7',
@@ -17,7 +17,7 @@ const buttonSyles = cva('text-white font-medium ', {
             false: 'rounded-md',
         },
         intend: {
-            primary: 'bg-brand-main hover:bg-brand-500 active:bg-brand-600',
+            primary: 'text-white bg-brand-main hover:bg-brand-500 active:bg-brand-600',
             error: 'bg-red-600',
             secondary: 'border-2 border-brand-500/70 text-brand-500',
         },

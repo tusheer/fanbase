@@ -3,7 +3,8 @@ import { useImageUpload } from '@fanbase/ui/hooks';
 import XIcon from '@fanbase/ui/icons/XIcon';
 import Image from 'next/image';
 import React from 'react';
-interface IProfileImageUploadProps {
+
+export interface IProfileImageUploadProps {
     isOpen: boolean;
     onClose: () => void;
 }

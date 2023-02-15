@@ -41,7 +41,7 @@ const useImageFileUpload = ({
         const _files = files.filter((file) => 'lastModified' in file);
 
         //lazy import
-        const uploadImage = await import('../utils').then((upload) => upload.uploadImage);
+        const uploadImage = await import('../utils/uploadImage').then((upload) => upload.default);
         const response = await Promise.allSettled(
             _files.map(async (file) => {
                 return await uploadImage(file as File);

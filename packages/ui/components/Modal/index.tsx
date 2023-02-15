@@ -80,6 +80,7 @@ export const Modal: React.FC<IModalProps> = ({ className = '', children, onClose
                         exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.3, ease: 'easeOut' } }}
                         onClick={(e) => e.stopPropagation()}
                         className={`max-h-screen w-full bg-white ${className} `}
+                        style={{ maxHeight: 'calc(100vh - 50px)' }}
                     >
                         {children}
                     </motion.div>

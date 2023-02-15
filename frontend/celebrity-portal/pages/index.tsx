@@ -1,12 +1,16 @@
+import { UnmountDelay } from '@fanbase/ui/components';
 import { Pen } from '@fanbase/ui/icons/Pen';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import React, { useState } from 'react';
-
 import AuthLayout from '../src/layouts/AuthLayout';
 import BaseLayout from '../src/layouts/BaseLayout';
-import UploadProfileModal from '../src/modules/profile/components/UploadProfileModal';
 import useUserStore from '../src/store/user';
 import { DecodedUser, withSession } from './_app';
+
+const UploadProfileModal = dynamic(() => import('../src/modules/profile/components/UploadProfileModal'), {
+    ssr: true,
+});
 
 export default function Web() {
     const user = useUserStore((state) => state.user);
@@ -56,8 +60,9 @@ export default function Web() {
                 </div>
                 <div className="h-72 w-3/12 rounded-md bg-gray-100"></div>
             </div>
-
-            <UploadProfileModal isOpen={isOpen} onClose={() => setisOpen(false)} />
+            <UnmountDelay unmount={isOpen} delay={300}>
+                <UploadProfileModal isOpen={isOpen} onClose={() => setisOpen(false)} />
+            </UnmountDelay>
         </section>
     );
 }
