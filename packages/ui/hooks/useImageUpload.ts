@@ -1,9 +1,9 @@
 import { ImageType } from '@fanbase/schema';
 import React, { useEffect, useState } from 'react';
 
-interface IUseImageUploadParams {
+export interface IUseImageUploadParams {
     previousUploadedFiles: IFile[];
-    multiple?: boolean;
+    multiple: boolean;
 }
 
 type IFile = ImageType | File;
@@ -13,7 +13,7 @@ interface IFileWithType {
     url: string;
 }
 
-interface IUseImageUploadReturn {
+export interface IUseImageUploadReturn {
     files: IFileWithType[];
     onUpload: () => Promise<ImageType[]>;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,10 +21,10 @@ interface IUseImageUploadReturn {
     onRemove: (index: number) => void;
 }
 
-const useImageFileUpload = ({
-    previousUploadedFiles,
+function useImageFileUpload({
+    previousUploadedFiles = [],
     multiple = true,
-}: IUseImageUploadParams): IUseImageUploadReturn => {
+}: IUseImageUploadParams): IUseImageUploadReturn {
     const [files, setFiles] = useState<IFile[]>([]);
 
     useEffect(() => {
@@ -87,7 +87,6 @@ const useImageFileUpload = ({
     const genareteUrlFromRecentSelectedImage = (file: File) => {
         const url = URL.createObjectURL(file);
         const name = file.name ? file.name : '';
-
         return {
             url,
             name,
@@ -111,6 +110,6 @@ const useImageFileUpload = ({
         onChange,
         onRemove,
     };
-};
+}
 
 export default useImageFileUpload;
