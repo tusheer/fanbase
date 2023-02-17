@@ -1,1 +1,1 @@
-export { default as useImageUpload } from './useImageUpload';
+export { default as useImageUpload } from './use-image-upload';

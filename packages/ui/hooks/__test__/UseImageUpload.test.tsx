@@ -1,7 +1,7 @@
 import { act, renderHook, RenderHookResult } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { useImageUpload } from '..';
-import { IUseImageUploadParams, IUseImageUploadReturn } from '../useImageUpload';
+import { IUseImageUploadParams, IUseImageUploadReturn } from '../use-image-upload';
 
 const getBlobAndUrl = async (name: string) => {
     const blob = (await fetch(
