@@ -38,73 +38,43 @@ function useImageFileUpload({
     };
 
     const onUpload = async (): Promise<ImageType[]> => {
-        const _files = files.filter((file) => 'lastModified' in file);
-
-        //lazy import
         const uploadImage = await import('../utils/uploadImage').then((upload) => upload.default);
-        const response = await Promise.allSettled(
-            _files.map(async (file) => {
-                return await uploadImage(file as File);
+
+        const response = await Promise.all(
+            files.map(async (file) => {
+                return 'lastModified' in file ? await uploadImage(file as File) : file;
             })
         );
 
-        const filterResponse = response
-            .filter((file) => file.status === 'fulfilled')
-            .map(({ value }: any) => ({
-                ...value,
-            }));
-
-        const previousFiles = files
-            .filter((file) => !('lastModified' in file))
-            .map((file) => ({
-                ...file,
-            }));
-        return [...previousFiles, ...filterResponse];
+        return response.filter((file) => 'lastModified' in file).map(({ value }: any) => ({ ...value }));
     };
 
-    const onChange = ({ currentTarget: input }: React.ChangeEvent<HTMLInputElement>) => {
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const input = event.currentTarget;
+
         if (input.files === null) return;
-        if (multiple) {
-            setFiles([...files, ...input.files]);
-        } else {
-            setFiles([...input.files]);
-        }
+
+        setFiles(multiple ? [...files, ...input.files] : [...input.files]);
     };
 
     const onRemove = (index: number) => {
-        const _files = [...files];
-        _files.splice(index, 1);
-        setFiles(_files);
+        setFiles(files.filter((_, i) => i !== index));
     };
 
-    const genareteUrlFromPreviousUploadedImage = (file: ImageType) => {
-        return {
-            url: file.sizes.md.url,
-            name: file.originalFileName,
-        };
+    const generateUrl = (file: File | ImageType): IFileWithType => {
+        if ('lastModified' in file && file.lastModified) {
+            const url = URL.createObjectURL(file);
+            const name = file.name ? file.name : '';
+            return { url, name };
+        } else {
+            return { url: (file as ImageType).sizes.md.url, name: (file as ImageType).originalFileName };
+        }
     };
 
-    const genareteUrlFromRecentSelectedImage = (file: File) => {
-        const url = URL.createObjectURL(file);
-        const name = file.name ? file.name : '';
-        return {
-            url,
-            name,
-        };
-    };
-
-    const genaretedSelectFilesTypeAndUrl = (): IFileWithType[] => {
-        return files.map((file) => {
-            if ('lastModified' in file && file.lastModified) {
-                return genareteUrlFromRecentSelectedImage(file);
-            } else {
-                return genareteUrlFromPreviousUploadedImage(file as ImageType);
-            }
-        });
-    };
+    const generatedSelectFilesTypeAndUrl = (): IFileWithType[] => files.map(generateUrl);
 
     return {
-        files: genaretedSelectFilesTypeAndUrl(),
+        files: generatedSelectFilesTypeAndUrl(),
         onUpload,
         clear,
         onChange,

@@ -17,7 +17,7 @@ const getBlobAndUrl = async (name: string) => {
 
 describe('useImageUpload', () => {
     it('Shoud render and return basic data', () => {
-        let { result }: RenderHookResult<IUseImageUploadReturn, IUseImageUploadParams> = renderHook(useImageUpload, {
+        const { result }: RenderHookResult<IUseImageUploadReturn, IUseImageUploadParams> = renderHook(useImageUpload, {
             initialProps: {
                 previousUploadedFiles: [],
                 multiple: false as boolean,
@@ -27,7 +27,7 @@ describe('useImageUpload', () => {
     });
 
     it('Should add new file as a image', async () => {
-        let { result }: RenderHookResult<IUseImageUploadReturn, IUseImageUploadParams> = renderHook(useImageUpload, {
+        const { result }: RenderHookResult<IUseImageUploadReturn, IUseImageUploadParams> = renderHook(useImageUpload, {
             initialProps: {
                 previousUploadedFiles: [],
                 multiple: false as boolean,
