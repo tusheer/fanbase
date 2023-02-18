@@ -576,10 +576,6 @@ video {
   height: 2.25rem;
 }
 
-.h-full {
-  height: 100%;
-}
-
 .max-h-screen {
   max-height: 100vh;
 }
@@ -630,6 +626,14 @@ video {
 
 .border {
   border-width: 1px;
+}
+
+.border-2 {
+  border-width: 2px;
+}
+
+.border-brand-500\/70 {
+  border-color: rgb(42 149 226 / 0.7);
 }
 
 .border-gray-300 {
@@ -713,6 +717,11 @@ video {
 
 .font-medium {
   font-weight: 500;
+}
+
+.text-brand-500 {
+  --tw-text-opacity: 1;
+  color: rgb(42 149 226 / var(--tw-text-opacity));
 }
 
 .text-gray-900 {

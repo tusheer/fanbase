@@ -3,6 +3,8 @@ import { IDropdownContext, useDropdownContext } from './index';
 
 export interface IItemProps {
     children: ({ isActive }: { isActive: boolean }) => ReactElement;
+    className?: string;
+    onClick?: (event: React.MouseEvent) => void;
 }
 
 const Item: React.FC<IItemProps> = (props) => {
@@ -16,8 +18,12 @@ const Item: React.FC<IItemProps> = (props) => {
             aria-selected={uid === activeItemId}
             role="option"
             data-uid={uid}
+            onClick={(event) => {
+                event.stopPropagation();
+                props.onClick && props.onClick(event);
+            }}
         >
-            {props.children({ isActive: uid === activeItemId })};
+            {props.children({ isActive: uid === activeItemId })}
         </li>
     );
 };

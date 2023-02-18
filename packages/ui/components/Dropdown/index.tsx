@@ -1,5 +1,4 @@
 import React, { createContext, ReactElement, useContext, useRef, useState } from 'react';
-import { useIsomorphicLayoutEffect } from '../../hooks/use-iso-morphic-effect';
 import useOnClickOutside from '../../hooks/use-onclick-outside';
 import Button, { IButtonProps } from './Dropdown.Button';
 import Item, { IItemProps } from './Dropdown.Item';
@@ -55,10 +54,6 @@ const DropdownRoot: React.FC<IDropdown> = ({
         }
     });
 
-    useIsomorphicLayoutEffect(() => {
-        console.log(ref);
-    }, [children]);
-
     return (
         <DropdownContext.Provider value={providerValue}>
             <div className={`${className} inline-block`} ref={ref}>
@@ -71,5 +66,5 @@ const DropdownRoot: React.FC<IDropdown> = ({
 export const Dropdown: React.FC<IDropdown> & {
     Item: React.FC<IItemProps>;
     Items: React.FC<IItemsProps>;
-    Button: React.FC<IButtonProps>;
+    Button: React.FC<IButtonProps<React.ElementType>>;
 } = Object.assign(DropdownRoot, { Item, Items, Button });

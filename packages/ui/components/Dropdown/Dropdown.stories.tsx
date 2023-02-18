@@ -7,19 +7,27 @@ const DropdownComponent = () => {
         <Dropdown>
             <Dropdown.Button as={Button}>Hello Every one</Dropdown.Button>
             <Dropdown.Items>
-                <Dropdown.Item>
+                <Dropdown.Item onClick={() => console.log('hello')}>
                     {({ isActive }) => {
-                        return <div>Hello</div>;
+                        return (
+                            <div onClick={() => console.log('hero')} style={{ background: isActive ? 'red' : 'white' }}>
+                                Hello
+                            </div>
+                        );
                     }}
                 </Dropdown.Item>
                 <Dropdown.Item>
                     {({ isActive }) => {
-                        return <div>Hello</div>;
+                        return (
+                            <a href="/jel" style={{ background: isActive ? 'red' : 'white' }}>
+                                Hello
+                            </a>
+                        );
                     }}
                 </Dropdown.Item>
                 <Dropdown.Item>
                     {({ isActive }) => {
-                        return <div>Hello</div>;
+                        return <div style={{ background: isActive ? 'red' : 'white' }}>Hello</div>;
                     }}
                 </Dropdown.Item>
             </Dropdown.Items>
