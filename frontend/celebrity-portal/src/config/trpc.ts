@@ -1,9 +1,7 @@
 import type { AppRouter } from '@fanbase/hero';
-import { getFetch, httpBatchLink } from '@trpc/client';
-import { createTRPCNext } from '@trpc/next';
-
-import { loggerLink } from '@trpc/client/links/loggerLink';
-import SuperJSON from 'superjson';
+import { getFetch, httpBatchLink, loggerLink } from '@fanbase/trpc/client';
+import { createTRPCNext } from '@fanbase/trpc/next';
+import SuperJSON from '@fanbase/trpc/superjson';
 
 let resolving = false;
 

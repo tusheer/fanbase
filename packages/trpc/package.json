@@ -1,0 +1,21 @@
+{
+    "name": "@fanbase/trpc",
+    "version": "0.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "dependencies": {
+        "@tanstack/react-query": "^4.24.9",
+        "@tanstack/react-query-devtools": "^4.24.9",
+        "@trpc/client": "10.12.0",
+        "@trpc/next": "^10.12.0",
+        "@trpc/react-query": "^10.12.0",
+        "@trpc/server": "10.12.0",
+        "superjson": "^1.12.2"
+    },
+    "devDependencies": {
+        "typescript": "^4.9.5"
+    },
+    "publishConfig": {
+        "access": "public"
+    }
+}

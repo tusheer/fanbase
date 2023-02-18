@@ -10,7 +10,6 @@ import zodSchemaResolver from '../src/utils/zodSchemaParse';
 
 const SigninPage = () => {
     const ceateUser = trpc.user.signinCelebrityUser.useMutation();
-
     const {
         register,
         handleSubmit,

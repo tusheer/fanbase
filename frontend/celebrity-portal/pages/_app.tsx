@@ -1,7 +1,6 @@
-import type { AppRouter } from '@fanbase/hero';
 import { ImageType } from '@fanbase/schema';
+import { ReactQueryDevtools } from '@fanbase/trpc/@tanstack/react-query';
 import { Inter } from '@next/font/google';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
@@ -9,7 +8,7 @@ import trpc from '../src/config/trpc';
 import { verifyJwt } from '../src/utils/jwt';
 import '../styles/tailwind.css';
 
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithLayout<P = Record<string, never>, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement, pageProps: AppProps) => ReactNode;
 };
 
@@ -66,5 +65,5 @@ export const withSession = (
         return getSerSideProps(ctx, decodedUser);
     };
 };
-//  @ts-ignore: Unreachable code error
-export default trpc.withTRPC<AppRouter>(MyApp);
+
+export default trpc.withTRPC(MyApp as NextPage);
