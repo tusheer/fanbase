@@ -64,8 +64,10 @@ const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
         'keydown',
         (event) => {
             if (open && listselements.current.length) {
+                event.preventDefault();
                 switch (event.key) {
                     case 'ArrowDown':
+                    case 'Tab':
                         handleSelectNextItem();
                         break;
                     case 'ArrowUp':
