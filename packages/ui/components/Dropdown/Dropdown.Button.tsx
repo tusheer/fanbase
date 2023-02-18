@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import { IDropdownContext, useDropdownContext } from './index';
 
 export type IButtonProps<E extends React.ElementType> = {
-    children: ReactElement | string;
+    children: ReactElement | ReactElement[];
     className?: string;
     label?: string;
     as?: E;

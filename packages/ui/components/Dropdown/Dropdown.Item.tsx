@@ -2,12 +2,12 @@ import React, { ReactElement, useId } from 'react';
 import { IDropdownContext, useDropdownContext } from './index';
 
 export interface IItemProps {
-    children: ({ isActive }: { isActive: boolean }) => ReactElement;
+    children: ({ isActive }: { isActive: boolean }) => ReactElement | ReactElement[] | string;
     className?: string;
     onClick?: (event: React.MouseEvent) => void;
 }
 
-const Item: React.FC<IItemProps> = (props) => {
+const Item: React.FC<IItemProps> = ({ children, className = '', onClick }) => {
     const uid = useId();
 
     const { activeItemId, label }: IDropdownContext = useDropdownContext();
@@ -18,12 +18,13 @@ const Item: React.FC<IItemProps> = (props) => {
             aria-selected={uid === activeItemId}
             role="option"
             data-uid={uid}
+            className={className}
             onClick={(event) => {
                 event.stopPropagation();
-                props.onClick && props.onClick(event);
+                onClick && onClick(event);
             }}
         >
-            {props.children({ isActive: uid === activeItemId })}
+            {children({ isActive: uid === activeItemId })}
         </li>
     );
 };
