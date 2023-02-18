@@ -2,7 +2,7 @@ import React, { createContext, ReactElement, useContext, useRef, useState } from
 import useOnClickOutside from '../../hooks/use-onclick-outside';
 import Button, { IButtonProps } from './Dropdown.Button';
 import Item, { IItemProps } from './Dropdown.Item';
-import Items, { IItemsProps } from './Dropdown.Items';
+import Menu, { IMenuProps } from './Dropdown.Menu';
 
 export interface IDropdownContext {
     open: boolean;
@@ -65,6 +65,6 @@ const DropdownRoot: React.FC<IDropdown> = ({
 
 export const Dropdown: React.FC<IDropdown> & {
     Item: React.FC<IItemProps>;
-    Items: React.FC<IItemsProps>;
+    Menu: React.FC<IMenuProps>;
     Button: React.FC<IButtonProps<React.ElementType>>;
-} = Object.assign(DropdownRoot, { Item, Items, Button });
+} = Object.assign(DropdownRoot, { Item, Menu, Button });

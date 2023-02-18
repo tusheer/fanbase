@@ -6,7 +6,7 @@ const DropdownComponent = () => {
     return (
         <Dropdown>
             <Dropdown.Button as={Button}>Hello Every one</Dropdown.Button>
-            <Dropdown.Items>
+            <Dropdown.Menu>
                 <Dropdown.Item onClick={() => console.log('hello')}>
                     {({ isActive }) => {
                         return (
@@ -30,7 +30,7 @@ const DropdownComponent = () => {
                         return <div style={{ background: isActive ? 'red' : 'white' }}>Hello</div>;
                     }}
                 </Dropdown.Item>
-            </Dropdown.Items>
+            </Dropdown.Menu>
         </Dropdown>
     );
 };

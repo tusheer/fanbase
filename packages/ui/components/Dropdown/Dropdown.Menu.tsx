@@ -2,12 +2,12 @@ import React, { ReactElement, useEffect, useRef, useState } from 'react';
 import useEventListener from '../../hooks/use-event-listener';
 import { IDropdownContext, useDropdownContext } from './index';
 
-export interface IItemsProps {
+export interface IMenuProps {
     children: ReactElement | ReactElement[];
     className?: string;
 }
 
-const Items: React.FC<IItemsProps> = ({ children, className = '' }) => {
+const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
     const { label, open, setActiveItemId }: IDropdownContext = useDropdownContext();
     const listselements = useRef<HTMLLIElement[]>([]);
     const listboxref = useRef<HTMLUListElement | null>(null);
@@ -87,4 +87,4 @@ const Items: React.FC<IItemsProps> = ({ children, className = '' }) => {
     ) : null;
 };
 
-export default Items;
+export default Menu;
