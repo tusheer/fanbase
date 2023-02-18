@@ -8,7 +8,7 @@ export interface IMenuProps {
 }
 
 const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
-    const { label, open, setActiveItemId }: IDropdownContext = useDropdownContext();
+    const { label, open, setActiveItemId, setOpen }: IDropdownContext = useDropdownContext();
     const listselements = useRef<HTMLLIElement[]>([]);
     const listboxref = useRef<HTMLUListElement | null>(null);
     const [activeIndex, setActiveIndex] = useState<null | number>(null);
@@ -75,6 +75,9 @@ const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
                         break;
                     case 'Enter':
                         handleEnterItem();
+                        break;
+                    case 'Escape':
+                        setOpen(false);
                 }
             }
         },
