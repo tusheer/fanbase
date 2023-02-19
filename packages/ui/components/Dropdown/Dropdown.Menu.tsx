@@ -61,6 +61,7 @@ const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
 
     const handlePreviousItem = () => {
         if (activeIndex === null || activeIndex === 0) return;
+
         const previousList = getList(activeIndex - 1) as HTMLLIElement;
         const previousItemID = getListBoxUidAttribute(previousList);
         setActiveIndex(activeIndex - 1);
@@ -68,14 +69,17 @@ const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
         previousList.focus();
     };
 
-    const handleEnterItem = () => {
+    const handleEnterItem = (event: KeyboardEvent) => {
         if (activeIndex !== null) {
+            event.preventDefault();
             const list = getList(activeIndex) as HTMLLIElement;
             const findAnyLinkTag = list.querySelectorAll('a');
             list.click();
             findAnyLinkTag.forEach((element) => {
                 element.click();
             });
+        } else {
+            setOpen(true);
         }
     };
 
@@ -83,30 +87,34 @@ const Menu: React.FC<IMenuProps> = ({ children, className = '' }) => {
         'keydown',
         (event) => {
             if (open && listselements.current.length) {
-                event.preventDefault();
                 switch (event.key) {
                     case 'ArrowDown':
                     case 'Tab':
+                        event.preventDefault();
                         handleSelectNextItem();
                         break;
                     case 'ArrowUp':
+                        event.preventDefault();
                         handlePreviousItem();
                         break;
                     case 'Enter':
                     case ' ': // Space
-                        handleEnterItem();
+                        handleEnterItem(event);
                         break;
                     case 'Escape':
                     case 'Esc':
+                        event.preventDefault();
                         setOpen(false);
                         break;
                     case 'PageUp':
                     case 'Home':
+                        event.preventDefault();
                         setActiveIndex(0);
                         setActiveItemId(getListBoxUidAttribute(getList(0)));
                         break;
                     case 'PageDown':
                     case 'End':
+                        event.preventDefault();
                         setActiveIndex(listselements.current.length - 1);
                         setActiveItemId(getListBoxUidAttribute(getList(listselements.current.length - 1)));
                         break;
