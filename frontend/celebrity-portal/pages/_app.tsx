@@ -1,8 +1,8 @@
 import { ImageType } from '@fanbase/schema';
 import { ReactQueryDevtools } from '@fanbase/trpc/@tanstack/react-query';
-import { Inter } from '@next/font/google';
 import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import { Inter } from 'next/font/google';
 import { ReactElement, ReactNode } from 'react';
 import trpc from '../src/config/trpc';
 import { verifyJwt } from '../src/utils/jwt';
