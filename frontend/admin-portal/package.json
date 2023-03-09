@@ -9,26 +9,19 @@
         "lint": "next lint"
     },
     "dependencies": {
-        "@next/font": "13.2.3",
-        "@tanstack/react-query": "^4.24.10",
-        "@tanstack/react-query-devtools": "^4.24.12",
-        "@trpc/client": "10.13.2",
-        "@trpc/next": "^10.13.2",
-        "@trpc/react-query": "^10.13.2",
-        "@trpc/server": "10.13.2",
+        "@fanbase/trpc": "*",
+        "@fanbase/ui": "*",
         "eslint": "8.35.0",
         "next": "13.2.3",
         "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "superjson": "^1.12.2",
-        "@fanbase/ui": "*"
+        "react-dom": "^18.2.0"
     },
     "devDependencies": {
-        "@types/node": "^18.14.5",
-        "@types/react": "^18.0.28",
-        "@types/react-dom": "^18.0.11",
         "@fanbase/eslint-config-custom-react": "*",
         "@fanbase/tsconfig": "*",
+        "@types/node": "^18.14.6",
+        "@types/react": "^18.0.28",
+        "@types/react-dom": "^18.0.11",
         "typescript": "4.9.5"
     }
 }
